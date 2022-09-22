@@ -1,0 +1,94 @@
+package com.springmvc.controller;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+
+import bean.*;
+
+import util.EditStudentProfileDB;
+import util.LoginbyStudentDB;
+@Controller
+public class EditStudentProfilecontroller {
+
+	public EditStudentProfilecontroller() {
+		// TODO Auto-generated constructor stub
+	}
+	
+
+
+
+@RequestMapping(value = "/loadEditStudentProfile" , method = RequestMethod.GET)
+public String loadEditStudentProfilePage() {
+	
+	return "EditStudentProfile";
+}
+
+@RequestMapping(value = "/loadViewStudentProfile" , method = RequestMethod.GET)
+public String loadViewStudentProfile() {
+	
+	return "ViewStudentProfile";
+}
+
+@RequestMapping(value="/EditStudentProfile", method=RequestMethod.POST)
+public String EditStudentProfile(HttpServletRequest request ,Model md , HttpSession session) {
+	
+	try {
+		request.setCharacterEncoding("UTF-8");
+		}catch(UnsupportedEncodingException e1) {
+		e1.printStackTrace();
+		}
+	
+	String studentid = request.getParameter("studentid");
+	String studentname = request.getParameter("studentname");
+	String studentlastname = request.getParameter("studentlastname");
+	String workposition = request.getParameter("workposition");
+	String password = request.getParameter("password");
+	
+	System.out.println(studentid+studentname+studentlastname+workposition+password);
+
+	Student stu = new Student(studentid,studentname,studentlastname,password,workposition,null,null,"",0,0,0,0);
+
+	EditStudentProfileDB sm = new EditStudentProfileDB();
+	int error = sm.UPDATEStudent(stu);
+	
+	if(error == 1) {
+		LoginbyStudentDB LS = new LoginbyStudentDB();
+		stu = LS.verifyLoginSTU(stu);
+		session.setAttribute("student", stu);
+		return "ViewStudentProfile";
+	}else {
+		//response.sendRedirect("login.jsp");+
+		return "EditStudentProfile";
+	}
+	
+}
+
+@RequestMapping(value = "/loadEditStudentProfileT" , method = RequestMethod.GET)
+public String loadEditStudentProfileT(HttpServletRequest request ,Model md , HttpSession session) {
+	
+	EditStudentProfileDB ESP = new EditStudentProfileDB();
+	
+	String studentid = request.getParameter("studentid");
+	Student STU = ESP.verifySTU(studentid);
+	
+	session.setAttribute("studentE", STU);
+	
+	return "EditStudentProfileT";
+}
+
+
+}

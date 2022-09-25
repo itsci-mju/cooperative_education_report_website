@@ -4,12 +4,12 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <%ReviewCompanyDB RVC = new ReviewCompanyDB(); %>
 
-<%String error = "0"; %>
+<%String error = null; %>
 <%
 try{
 	error = (String)request.getAttribute("Error");
 }catch(Exception e) {
-	error = "0";
+	error = null;
 	}
 %>	
 
@@ -28,9 +28,13 @@ try{
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href='https://fonts.googleapis.com/css?family=Kanit'	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
-<link rel="stylesheet" href="./css/Alert.css">
+<link rel="stylesheet" href="./css/Alertindex.css">
 
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
+
+ <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 <style type="text/css">
 
@@ -215,10 +219,16 @@ figure img{width:300px;}
 <body>
 
 	<jsp:include page="com/navbar.jsp"></jsp:include>
-<div class="alert success">
-  <span class="closebtn">&times;</span>  
-  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> บันทึกข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+
+<%if(error != null){ %>	
+ <div class="alert hide">
+        <span class="fas fa-exclamation-circle"></span>
+        <span class="msg">กรุณาส่ง : <a href="${pageContext.request.contextPath}/loadnotifyPage"><%=error%></a> </span>
+        <div class="close-btn">
+          <span class="fas fa-times"></span>
+        </div>
 </div>
+<%}%>
 
 	<div style="margin-top: 0px;">
 	
@@ -560,18 +570,19 @@ figure img{width:300px;}
 		</div>
 	</section>
 				
-<script>
-var close = document.getElementsByClassName("closebtn");
-var i;
 
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function(){
-    var div = this.parentElement;
-    div.style.opacity = "0";
-    setTimeout(function(){ div.style.display = "none"; }, 600);
-  }
-}
-</script>  
+<script>
+    
+        $('.alert').addClass("show");
+        $('.alert').removeClass("hide");
+        $('.alert').addClass("showAlert");
+       
+     
+      $('.close-btn').click(function(){
+        $('.alert').removeClass("show");
+        $('.alert').addClass("hide");
+      });
+    </script>
 
 	<jsp:include page="com/footer.jsp"></jsp:include>
 

@@ -2,6 +2,9 @@ package com.springmvc.controller;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import bean.*;
 
 import util.LoginbyStudentDB;
+import util.notifysendingreportDB;
 @Controller
 public class LoginController {
 
@@ -50,6 +54,11 @@ public String loadhomePage() {
 @RequestMapping(value="/login", method=RequestMethod.POST)
 public String doLogin(HttpServletRequest request ,Model md , HttpSession session) {
 	
+	
+	notifysendingreportDB HM = new notifysendingreportDB();
+	List<reportname> Listreportname = HM.AllListreportname();
+	String Error = "0";
+	
 	try {
 		request.setCharacterEncoding("UTF-8");
 		}catch(UnsupportedEncodingException e1) {
@@ -65,11 +74,76 @@ public String doLogin(HttpServletRequest request ,Model md , HttpSession session
 	stu = sm.verifyLoginSTU(stu);
 	
 	if(stu != null) {
+		request.setAttribute("error",1);
+		
+		for (reportname R : Listreportname) {
+			
+			Date dt = new Date(stu.getStartdate().getTime());
+			Calendar c = Calendar.getInstance();
+			c.setTime(dt);
+			c.add(Calendar.DATE, R.getDelivery());
+			dt = c.getTime();
+			
+
+			Date dd = new Date();
+			Calendar c1 = Calendar.getInstance();
+			c1.setTime(dd);
+			c1.add(Calendar.YEAR,543);
+			dd = c1.getTime();
+			
+			if(dd.after(dt)){
+				
+				 report Lreport = null;
+                 int reportnameid = 0;
+                 try{
+                    Lreport = HM.AllListmyreport(stu.getIdstudent() , R.getReportnameid()); 
+                    reportnameid = Lreport.getReportName_reportnameid();
+                    }catch(Exception e){
+                    reportnameid = 0;
+                    }
+                 
+                 
+                 int reportid = 0;
+                 try{
+                	 
+                	 reportid = HM.AllListreportid(stu.getIdstudent() , R.getReportnameid()-1);  
+                	                                  	 
+                     }catch(Exception e){
+                     reportid = 0;
+                     } 
+                 
+                 if(reportnameid == R.getReportnameid()){
+                	 
+                 }
+                 
+                 else if (reportid+1 == R.getReportnameid()){
+                	 if(R.getReportnameid() == 18) {
+                		 evaluatevideo ev1 = null;
+                         String id = null;
+                            try{
+                                 ev1 = HM.AllListVDO(stu.getIdstudent()); 
+                                 id = ev1.getStudent_studentid();
+                               }catch(Exception e){
+                                 reportnameid = 0;
+                               }
+                            if(id == null){
+                            	Error = R.getReportname();
+                             break;
+                            }
+                            
+                	 }
+                	 Error = R.getReportname();
+                 }
+				
+			}
+			
+			
+		}
+		request.setAttribute("Error", Error);
 		session.setAttribute("student", stu);
 		return "index";
 	}else {
-		session.setAttribute("login","ข้อมูลไม่ถูกต้อง กรุณาลองใหม่");
-		//response.sendRedirect("login.jsp");
+		request.setAttribute("error",-1);
 		return "LoginbyStudentPage";
 	}
 	
@@ -94,10 +168,11 @@ public String loginTC(HttpServletRequest request ,Model md , HttpSession session
 	th = sm.verifyLoginTC(th);
 	
 	if(th != null) {
+		request.setAttribute("error",1);
 		session.setAttribute("teacher",th);
 		return "index";
-	}else {
-		session.setAttribute("login","ข้อมูลไม่ถูกต้อง กรุณาลองใหม่");
+	}else {	
+		request.setAttribute("error",-1);
 		//response.sendRedirect("login.jsp");
 		return "LoginbyStudentPage";
 	}

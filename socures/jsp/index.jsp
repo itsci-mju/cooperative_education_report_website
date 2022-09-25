@@ -4,6 +4,15 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <%ReviewCompanyDB RVC = new ReviewCompanyDB(); %>
 
+<%String error = "0"; %>
+<%
+try{
+	error = (String)request.getAttribute("Error");
+}catch(Exception e) {
+	error = "0";
+	}
+%>	
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href='https://fonts.googleapis.com/css?family=Kanit'	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
+<link rel="stylesheet" href="./css/Alert.css">
 
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
@@ -205,7 +215,10 @@ figure img{width:300px;}
 <body>
 
 	<jsp:include page="com/navbar.jsp"></jsp:include>
-
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> บันทึกข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
 
 	<div style="margin-top: 0px;">
 	
@@ -547,7 +560,18 @@ figure img{width:300px;}
 		</div>
 	</section>
 				
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
 
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script>  
 
 	<jsp:include page="com/footer.jsp"></jsp:include>
 

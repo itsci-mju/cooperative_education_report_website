@@ -49,6 +49,14 @@ public class ViewVDOcontroller {
 		return "ViewVDOPage";
 	}
 	
+	@RequestMapping(value = "/loadViewVDOALLPage" , method = RequestMethod.GET)
+	public String loadViewVDOALLPage(HttpServletRequest  request ,HttpSession session) {
+		
+		
+		
+		return "ListVDOPage";
+	}
+	
 	
 
 	

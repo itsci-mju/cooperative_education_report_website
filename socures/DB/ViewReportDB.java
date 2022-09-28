@@ -84,6 +84,35 @@ public class ViewReportDB {
 		}
 		return v;
 	}
+	
+	
+	public List<report> ViewreportDESC(){
+		List<report> v = new ArrayList<>();
+		ConnectionDB condb = new ConnectionDB();
+		Connection con = condb.getConnection();
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "SELECT  reportid,filename,sentdate,status,Student_studentid,ReportName_reportnameid FROM report INNER JOIN evaluatereport ON report.reportid = evaluatereport.Report_reportid GROUP BY reportid ORDER BY score DESC LIMIT 0,3";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				 int reportid = rs.getInt(1);
+				 String filename = rs.getString(2);
+				 String sentdate = rs.getString(3);
+				 String status = rs.getString(4);
+				 String Student_studentid = rs.getString(5);
+				 int ReportName_reportnameid = rs.getInt(6);
+				 				
+				 report v1 = new report (reportid,filename,sentdate,status,Student_studentid,ReportName_reportnameid);
+				 v.add(v1);
+			}
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return v;
+	}
 
 	}
 

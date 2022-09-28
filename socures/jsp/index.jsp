@@ -3,13 +3,24 @@
 <%@ page import = "bean.*, util.*,java.util.*" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <%ReviewCompanyDB RVC = new ReviewCompanyDB(); %>
+<%ViewReportDB VR = new ViewReportDB(); %>
+<%ViewVDODB vdo = new ViewVDODB(); %>
 
-<%String error = null; %>
+<%
+String error = null; 
+String errorRV = null;
+%>
 <%
 try{
 	error = (String)request.getAttribute("Error");
 }catch(Exception e) {
 	error = null;
+	}
+
+try{
+	errorRV = (String)request.getAttribute("ErrorRV");
+}catch(Exception e) {
+	errorRV = null;
 	}
 %>	
 
@@ -29,6 +40,8 @@ try{
 <link href='https://fonts.googleapis.com/css?family=Kanit'	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
 <link rel="stylesheet" href="./css/Alertindex.css">
+<link rel="stylesheet" href="./css/VReport.css">
+<link rel="stylesheet" href="./css/index.css">
 
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
@@ -210,6 +223,7 @@ figure img{width:300px;}
 }
 
 
+
 </style>
 
 
@@ -223,12 +237,22 @@ figure img{width:300px;}
 <%if(error != null){ %>	
  <div class="alert hide">
         <span class="fas fa-exclamation-circle"></span>
-        <span class="msg">กรุณาส่ง : <a href="${pageContext.request.contextPath}/loadnotifyPage"><%=error%></a> </span>
+        <span class="msg">กรุณาส่ง : <%=error%> <a href="${pageContext.request.contextPath}/loadnotifyPage">ส่งเอกสาร</a> </span>
         <div class="close-btn">
           <span class="fas fa-times"></span>
         </div>
 </div>
-<%}%>
+
+<%}else if(errorRV != null){ %>	
+ <div class="alert hide">
+        <span class="fas fa-exclamation-circle"></span>
+        <span class="msg">กรุณาประเมินความพึงพอใจที่มีต่อบริษัท <a href="${pageContext.request.contextPath}/loadReviewCompanyPage">รีวิวผลการฝึกสหกิจศึกษา</a> </span>
+        <div class="close-btn">
+          <span class="fas fa-times"></span>
+        </div>
+</div>
+<%} %>
+
 
 	<div style="margin-top: 0px;">
 	
@@ -258,12 +282,43 @@ figure img{width:300px;}
 	
 	
 	</div>
+	
+	
+	<section style="margin-top: 40px;" >
+	<div align = "center">
+	<table class="table table-borderless" style="width:55%;">
+								<thead>
+							
+								</thead>
+								<tbody>
+								<tr>
+								
+								<th>
+								    
+                                <br><br><br>
+								<h3 style="color: #882C2C; font-size: 35px; font-weight: 600;">"Design, Build and Test IT."</h3><br>
+								<p style= "color: #7A7A7A;  font-size: 16px; font-weight: 400;">
+								&nbsp;&nbsp;&nbsp;&nbsp; สาขาวิชาเทคโนโลยีสารสนเทศของเรามีคำขวัญที่ว่า “We learn to Design, Build and Test IT Solutions for Tomorrow.” ซึ่งหมายความว่า พวกเราเรียนรู้ที่จะออกแบบ สร้าง และทดสอบการแก้ปัญหาทางไอทีเพื่ออนาคต และสิ่งนี้เองคือหัวใจสำคัญในการผลิตบัณฑิตที่มีคุณภาพออกสู่สังคมในการพัฒนาสายงานเทคโนโลยีเพื่อการพัฒนาที่ยั่งยืน
+								</p>
+								</th>
+								<th>
+								<img src="http://coopitscimju.cmstogether.com/wp-content/uploads/2021/10/ifnal.jpg" class="attachment-large size-large" alt="Paris" width="450" height="350" style="border-radius: 50px 50px 50px 50px;">
+								</th>
+								
+								</tr>
+								</tbody>
+	</table>
+	</div>
+	</section>
+	
+	<br>
+	<br>
 
          <%List<Company> listCOM = RVC.companyALLDESC(); %>
 
 				<section class="section " id="blog" style="margin-top: -60px; " >
 		<div class="container" style="background-image:url('./img/line_bg.gif')">
-			<h2 class="text-header text-center"> บริษัทฝึกสหกิจ </h2>
+			<h2 class="text-header text-center"> รีวิวบริษัทสหกิจศึกษา </h2>
 			<hr class="colorgraph">
 			<%
 				String date = "";
@@ -563,13 +618,71 @@ figure img{width:300px;}
 				}
 			%>
 			
-			<br><br>
+			<br>
 			<div align = "center">
 			<a id="Button4" href="${pageContext.request.contextPath}/loadComReviewPage"  onmouseover="AnimateCss('Button4', 'animate-box-shadow', 0, 500);return false;" style="display: inline-block; width: 175px; height: 25px; z-index: 26; animation-delay: 0ms; animation-duration: 500ms; animation-fill-mode: both; animation-name: animate-box-shadow;"> Read More </a>
 			</div>
 		</div>
+		
+		
+		<br><br><br><br>
+		<div class="main">
+  <h2 class="text-header text-center"> ตัวอย่างเอกสารสหกิจ </h2>
+			<hr class="colorgraph">
+  <ul class="cards">
+  
+    <%List<report> listVR = VR.ViewreportDESC(); %>
+    
+  <%for(int i= 0; i<listVR.size() ; i++){ %>
+    <li class="cards_item">
+      <div class="card">
+      
+        <div class="card_image"><img src="./images/Reportimg.png" width = "100%" height ="400 px"></div>
+        <div class="card_content" style ="background-color: #FF4361;" >
+          <div align = "center">
+          </div>
+          <div class="btn-bar">
+				<a  href="./document/<%=listVR.get(i).getFilename() %>" target="_blank" style = "color: #FFFFFF;" class="px-btn-arrow"> <span>Read More</span> <i
+									class="arrow"></i>
+				</a>
+		  </div>
+        </div>
+      </div>
+    </li>
+ <%} %>
+  </ul>
+</div>
+
+<br><br><br><br>
+<div class="main">
+  <h2 class="text-header text-center"> วีดีโอผลการปฏิบัติงานสหกิจศึกษา  </h2>
+			<hr class="colorgraph">
+  <ul class="cards">
+  
+  <%List<VDO> Listvdo = vdo.AllListStuvdoDESC(); %>
+  <%for(int i= 0; i<Listvdo.size() ; i++){ %>
+    <li class="cards_item">
+      <div class="card">
+      
+      <% String[] arr = Listvdo.get(i).getFilename().split("src="); %>
+	  <% String[] arr1 = arr[1].split("title="); %>
+        <div class="card_image">
+       <iframe width="350" height="300" src=<%=arr1[0]%> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+       
+      </div>
+    </li>
+<%}%>
+  </ul>
+  <br>
+			<div align = "center">
+			<a id="Button4" href="${pageContext.request.contextPath}/loadViewVDOALLPage"  onmouseover="AnimateCss('Button4', 'animate-box-shadow', 0, 500);return false;" style="display: inline-block; width: 175px; height: 25px; z-index: 26; animation-delay: 0ms; animation-duration: 500ms; animation-fill-mode: both; animation-name: animate-box-shadow;"> Read More </a>
+			</div>
+</div>
+			
 	</section>
-				
+	
+
 
 <script>
     
@@ -582,7 +695,12 @@ figure img{width:300px;}
         $('.alert').removeClass("show");
         $('.alert').addClass("hide");
       });
+           
     </script>
+    
+
+
+    
 
 	<jsp:include page="com/footer.jsp"></jsp:include>
 

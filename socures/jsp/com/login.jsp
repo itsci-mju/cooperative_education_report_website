@@ -22,7 +22,7 @@ try{
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
     crossorigin="anonymous">
-<link rel='stylesheet' href='css/login.css' type='text/css' />
+
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,17 +36,27 @@ try{
 <link href='https://fonts.googleapis.com/css?family=Kanit'	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
 <link rel="stylesheet" href="./css/Alert.css">
-
+<link rel='stylesheet' href='css/login.css' type='text/css' />
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
-
-<style>
-
+<style type="text/css">
+.overlay {
+    background: #B73743;
+    background: linear-gradient(#B73743 , #251635) no-repeat 0 0 / cover;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateY(0);
+    transition: transform .6s ease-in-out;
+}
 </style>
+
 
 </head>
 <%if(error == -1){ %>
-<div class="alert" >
+<div class="alert info" style="background-color: #343749;">
   <span class="closebtn">&times;</span>  
   <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> เข้าสู่ระบบไม่สำเร็จ : </strong> กรุณาเข้าสู่ระบบใหม่  
 </div>
@@ -68,7 +78,7 @@ try{
                <input type="email" name="unameE" id="unameE" placeholder=" อีเมล " />
                 <input type="password" name="pwdE" id="pwdE"  placeholder="รหัสผ่าน ">
                 <br>
-                <button> เข้าสู่ระบบ </button>
+                <button style="background-color:#0C6838; border: 1px solid #0C6838;" > เข้าสู่ระบบ </button>
             </form>
         </div>
         <div class="form-container1 sign-in-container1">
@@ -78,17 +88,17 @@ try{
                 <input type="text" name="uname" id="uname" placeholder=" รหัสนักศึกษา " />
                 <input type="password" name="pwd" id="pwd"  placeholder="รหัสผ่าน " />
                 <br>
-                <button> เข้าสู่ระบบ </button>
+                <button style="background-color:#0C6838;  border: 1px solid #0C6838;"> เข้าสู่ระบบ </button>
             </form>
         </div>
-        <div class="overlay-container1">
-            <div class="overlay">
+        <div class="overlay-container1" >
+            <div class="overlay" >
                 <div class="overlay-panel overlay-left">
                     <h1> เข้าสู่ระบบนักศึกษา </h1>
                     <p>สำหรับนักศึกษาฝึกสหกิจสาขาเทคโนโลยีสารสนเทศ </p>
                     <button class="ghost" id="signIn"> < </button>
                 </div>
-                <div class="overlay-panel overlay-right">
+                <div class="overlay-panel overlay-right" >
                     <h1>เข้าสู่ระบบอาจารย์ </h1>
                     <p>สำหรับอาจารย์สาขาเทคโนโลยีสารสนเทศ </p>
                     <button class="ghost" id="signUp"> > </button>

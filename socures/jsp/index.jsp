@@ -5,6 +5,7 @@
 <%ReviewCompanyDB RVC = new ReviewCompanyDB(); %>
 <%ViewReportDB VR = new ViewReportDB(); %>
 <%ViewVDODB vdo = new ViewVDODB(); %>
+<%teacherManager TM = new teacherManager(); %>
 
 <%
 String error = null; 
@@ -651,6 +652,10 @@ figure img{width:300px;}
     </li>
  <%} %>
   </ul>
+  <br>
+  <div align = "center">
+    <a id="Button4" href="https://secretary-science.mju.ac.th/wtms_document.aspx?bID=7577&lang=th-TH&fbclid=IwAR22p9PGsVe8X8B53GIxgHr0MpwxrW73nCTKank8soFb8jlCaudq3XTIHOc"  onmouseover="AnimateCss('Button4', 'animate-box-shadow', 0, 500);return false;" style="display: inline-block; width: 175px; height: 25px; z-index: 26; animation-delay: 0ms; animation-duration: 500ms; animation-fill-mode: both; animation-name: animate-box-shadow;"> เอกสารเผยแพร่ </a>
+  </div>
 </div>
 
 <br><br><br><br>
@@ -679,7 +684,28 @@ figure img{width:300px;}
 			<a id="Button4" href="${pageContext.request.contextPath}/loadViewVDOALLPage"  onmouseover="AnimateCss('Button4', 'animate-box-shadow', 0, 500);return false;" style="display: inline-block; width: 175px; height: 25px; z-index: 26; animation-delay: 0ms; animation-duration: 500ms; animation-fill-mode: both; animation-name: animate-box-shadow;"> Read More </a>
 			</div>
 </div>
-			
+
+<br><br><br><br>
+<div class="main">
+ <h2 class="text-header text-center"> บุคลากรของหลักสูตร  </h2>
+			<hr class="colorgraph">
+<div class="row" align = "center">
+<%List<teacher> tc = TM.SearchteacherALL(); %>
+  <%for(int i= 0; i<tc.size() ; i++){ %>
+  <%if(tc.get(i).getStatus().equals("อยู่") || tc.get(i).getStatus().equals("กำลังศึกษาต่อ") ){ %>
+          <div class="col-lg-4">
+            <div class="team-member">
+                <img class="mx-auto rounded-circle" src="./images/<%=tc.get(i).getTeacherimg() %>" alt="" width = "250px" height ="250px">
+                <br>
+                <h4 style="color: #880000;"><b><%=tc.get(i).getTeachername()%> <%=tc.get(i).getTeacherlastname() %></b></h4>
+                  <br><br>
+   
+            </div>
+        </div>
+      <%} %>
+        <%} %>
+      </div>
+</div>			
 	</section>
 	
 

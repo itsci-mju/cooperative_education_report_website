@@ -47,7 +47,14 @@ public class AddStudentcontroller {
 	
 		ListCompanyDB LC = new ListCompanyDB();
 		teacherManager TM = new teacherManager();
+		ListStudentDB LSTU = new ListStudentDB();
+		
 		List<AddStudent> listStudent = new ArrayList<>();
+		List<Student> Student = new ArrayList<>();
+		String yearE = null;	 
+		String inlineRadio1 = null;
+		int error = 0;
+		List errorlist = new ArrayList<>();
 		
 		Date dd = new Date();
 		Calendar c1 = Calendar.getInstance();
@@ -61,7 +68,13 @@ public class AddStudentcontroller {
 				try {
 					List<FileItem> multiFileItem = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 
-					String fileName = multiFileItem.get(0).getName();
+	
+					 yearE = new String(multiFileItem.get(0).get(),StandardCharsets.UTF_8);
+					 inlineRadio1 = new String(multiFileItem.get(1).get(),StandardCharsets.UTF_8);
+					System.out.println(yearE+inlineRadio1);
+					
+					
+					String fileName = multiFileItem.get(2).getName();
 
 					System.out.println("fileName : " + fileName);
 					
@@ -72,7 +85,7 @@ public class AddStudentcontroller {
 					
 					String file = path + File.separator + dateFormat + fileName;
 					
-					multiFileItem.get(0).write(new File(file));
+					multiFileItem.get(2).write(new File(file));
 
 					ReadWriteExcel1 readWriteExcel = new ReadWriteExcel1();
 					
@@ -107,7 +120,7 @@ public class AddStudentcontroller {
 							
 							AddStudent ST = new AddStudent(student_id,firstname,lastname,student_id,workposition,SQLdate1,SQLdate2,Teacher,Company);
 							listStudent.add(ST);													
-
+							
 						}
 
 					} catch (Exception e) {
@@ -118,7 +131,48 @@ public class AddStudentcontroller {
 					e.printStackTrace();
 				}
 			}
-			session.setAttribute("listSTU", listStudent);
+			
+			
+			for(AddStudent s : listStudent) {
+				
+				int COMid = 0;
+				  int TSid = 0;
+					try {
+					COMid = LC.SearchcompanyName(s.getCompany_companyname());							
+					} catch (Exception e) {
+						e.printStackTrace();
+						COMid = 0;
+					}
+					
+					try {
+						TSid = TM.Searchteachername(s.getTeacher_teachername());														
+					} catch (Exception e) {
+						e.printStackTrace();
+						TSid = 0;
+					}
+					
+					String semester = null;
+					
+					if(inlineRadio1.equals("V1")) {
+						semester = "ภาคเรียนที่2/"+yearE;
+					}else {
+						semester = "ภาคเรียนที่2/"+yearE+" "+"ซัมเมอร์";
+					}
+					
+					Student STU = new Student (s.getIdstudent(),s.getStudentname(),s.getStudentlastname(),s.getPassword(),s.getWorkposition(),s.getStartdate(),s.getEnddate(),semester,TSid,COMid);
+					error = LSTU.addStudent(STU);
+					if(error == -1) {
+						errorlist.add(s.getIdstudent());						
+					}else {
+						Student.add(STU);
+					}
+				
+			}
+			if(errorlist.size() == 0) {
+				errorlist.add("1");
+			}
+			request.setAttribute("errorlist", errorlist);
+			session.setAttribute("listSTU", Student);
 			ModelAndView mav = new ModelAndView("AddStudentPage");
 			return mav;
 		}
@@ -131,55 +185,5 @@ public class AddStudentcontroller {
 		return "AddStudentPage";
 	}
 	
-	@RequestMapping(value = "/AddStudentPageinEP" , method=RequestMethod.POST)
-	public String AddStudentPage(HttpServletRequest request ,Model md , HttpSession session){
-		
-		ListCompanyDB LC = new ListCompanyDB();
-		teacherManager TM = new teacherManager();
-		ListStudentDB LSTU = new ListStudentDB();
-		
-		try {
-			request.setCharacterEncoding("UTF-8");
-			}catch(UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-			}
-		
-		List<AddStudent> studentlist = (List)session.getAttribute("listSTU");
-		
-		String yearE = request.getParameter("yearE");
-		String inlineRadio1 = request.getParameter("inlineRadio1");
-		
-		for(AddStudent s : studentlist) {
-			
-			int COMid = 0;
-			  int TSid = 0;
-				try {
-				COMid = LC.SearchcompanyName(s.getCompany_companyname());							
-				} catch (Exception e) {
-					e.printStackTrace();
-					COMid = 0;
-				}
-				
-				try {
-					TSid = TM.Searchteachername(s.getTeacher_teachername());														
-				} catch (Exception e) {
-					e.printStackTrace();
-					TSid = 0;
-				}
-				
-				String semester = null;
-				
-				if(inlineRadio1.equals("V1")) {
-					semester = "ภาคเรียนที่2/"+yearE;
-				}else {
-					semester = "ภาคเรียนที่2/"+yearE+" "+"ซัมเมอร์";
-				}
-				
-				Student STU = new Student (s.getIdstudent(),s.getStudentname(),s.getStudentlastname(),s.getPassword(),s.getWorkposition(),s.getStartdate(),s.getEnddate(),semester,0,0,TSid,COMid);
-				LSTU.addStudent(STU);
-			
-		}
-		return "AddStudentPage";
-	}
 
 }

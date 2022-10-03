@@ -46,6 +46,7 @@ public String loadViewStudentProfile() {
 @RequestMapping(value="/EditStudentProfile", method=RequestMethod.POST)
 public String EditStudentProfile(HttpServletRequest request ,Model md , HttpSession session) {
 	
+	int error = 0;
 	try {
 		request.setCharacterEncoding("UTF-8");
 		}catch(UnsupportedEncodingException e1) {
@@ -60,20 +61,18 @@ public String EditStudentProfile(HttpServletRequest request ,Model md , HttpSess
 	
 	System.out.println(studentid+studentname+studentlastname+workposition+password);
 
-	Student stu = new Student(studentid,studentname,studentlastname,password,workposition,null,null,"",0,0,0,0);
+	Student stu = new Student(studentid,studentname,studentlastname,password,workposition,null,null,"",0,0);
 
 	EditStudentProfileDB sm = new EditStudentProfileDB();
-	int error = sm.UPDATEStudent(stu);
+     error = sm.UPDATEStudent(stu);
 	
-	if(error == 1) {
+
 		LoginbyStudentDB LS = new LoginbyStudentDB();
 		stu = LS.verifyLoginSTU(stu);
 		session.setAttribute("student", stu);
-		return "ViewStudentProfile";
-	}else {
-		//response.sendRedirect("login.jsp");+
+		request.setAttribute("error", error);
+		
 		return "EditStudentProfile";
-	}
 	
 }
 

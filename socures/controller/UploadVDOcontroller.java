@@ -2,6 +2,7 @@ package com.springmvc.controller;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -79,7 +80,7 @@ public class UploadVDOcontroller {
 		try {
 			List<FileItem> data = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(request);
 			
-			String profile_pic = new File(data.get(0).getName()).getName();
+			String URL = new String(data.get(0).get(),StandardCharsets.UTF_8);
 				
 			int getMaxVOD = UR.getMaxVOD();
 			
@@ -93,7 +94,7 @@ public class UploadVDOcontroller {
 			
 			int i = getMaxVOD+1;
 			
-			VDO vdo = new VDO(i,Reportid+"_"+student.getIdstudent()+"_"+date2+".mp4",date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
+			VDO vdo = new VDO(i,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
 			int error1 = UR.addvdo(vdo);	
 			
 			for(Student sd :Lstd) {
@@ -105,9 +106,6 @@ public class UploadVDOcontroller {
 			}
 			}
 			
-			String path = request.getSession().getServletContext().getRealPath("/") + "//video//";
-			System.out.println(path);
-			data.get(0).write(new File(path +File.separator +Reportid+"_"+student.getIdstudent()+"_"+date2+".mp4"));
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -134,7 +132,7 @@ public class UploadVDOcontroller {
 		try {
 			List<FileItem> data = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(request);
 			
-			String profile_pic = new File(data.get(0).getName()).getName();
+			String URL = new String(data.get(0).get(),StandardCharsets.UTF_8);
 				
 			int getMaxVOD = UR.getIDVOD(student.getIdstudent());
 			
@@ -147,14 +145,9 @@ public class UploadVDOcontroller {
 			String date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").format(dd);
 			
 			
-			VDO vdo = new VDO(getMaxVOD,Reportid+"_"+student.getIdstudent()+"_"+date2+".mp4",date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
+			VDO vdo = new VDO(getMaxVOD,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
 			int error1 = UR.Editvdo(vdo);	
-			
-			
-			String path = request.getSession().getServletContext().getRealPath("/") + "//video//";
-			System.out.println(path);
-			data.get(0).write(new File(path +File.separator +Reportid+"_"+student.getIdstudent()+"_"+date2+".mp4"));
-			
+	
 		}catch (Exception e) {
 			e.printStackTrace();
 			

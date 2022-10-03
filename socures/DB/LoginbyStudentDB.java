@@ -41,13 +41,11 @@ public class LoginbyStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				s= new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				s= new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			}
 			con.close();
 		} catch (SQLException e) {

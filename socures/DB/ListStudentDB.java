@@ -61,13 +61,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -98,13 +96,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -135,13 +131,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -172,13 +166,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -209,13 +201,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -245,13 +235,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -282,13 +270,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -319,13 +305,11 @@ public class ListStudentDB {
 				 Date startdate = rs.getDate(6);
 			     Date enddate = rs.getDate(7);
 				 String semester = rs.getString(8);
-				 double averagescorevideo = rs.getDouble(9);
-				 double averagescorereport = rs.getDouble(10);
-				 int Teacher_teacherid = rs.getInt(11);
-				 int Company_companyid = rs.getInt(12);
+				 int Teacher_teacherid = rs.getInt(9);
+				 int Company_companyid = rs.getInt(10);
 			
 				
-				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+				 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 			     ListStu.add(Stu);
 			}
 			
@@ -450,13 +434,11 @@ public List<Student> AllListStuSemester(String Semester){
 			 Date startdate = rs.getDate(6);
 		     Date enddate = rs.getDate(7);
 			 String semester = rs.getString(8);
-			 double averagescorevideo = rs.getDouble(9);
-			 double averagescorereport = rs.getDouble(10);
-			 int Teacher_teacherid = rs.getInt(11);
-			 int Company_companyid = rs.getInt(12);
+			 int Teacher_teacherid = rs.getInt(9);
+			 int Company_companyid = rs.getInt(10);
 		
 			
-			 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+			 Student Stu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 		     ListStu.add(Stu);
 		}
 		
@@ -574,7 +556,7 @@ public int addStudent(Student S){
 	Connection con = condb.getConnection();
 	try {
 	Statement statment = con.createStatement();
-	statment.execute("insert into student values('"+S.getIdstudent()+"','"+S.getStudentname()+"','"+S.getStudentlastname()+"','"+S.getPassword()+"','"+S.getWorkposition()+"','"+S.getStartdate()+"','"+S.getEnddate()+"','"+S.getSemester()+" ','0','0','"+S.getTeacher_teacherid()+"','"+S.getCompany_companyid()+"')");
+	statment.execute("insert into student values('"+S.getIdstudent()+"','"+S.getStudentname()+"','"+S.getStudentlastname()+"','"+S.getPassword()+"','"+S.getWorkposition()+"','"+S.getStartdate()+"','"+S.getEnddate()+"','"+S.getSemester()+" ','"+S.getTeacher_teacherid()+"','"+S.getCompany_companyid()+"')");
 	con.close();
 	return 1;
 	
@@ -604,13 +586,11 @@ public Student SStuid(String id){
 			 Date startdate = rs.getDate(6);
 		     Date enddate = rs.getDate(7);
 			 String semester = rs.getString(8);
-			 double averagescorevideo = rs.getDouble(9);
-			 double averagescorereport = rs.getDouble(10);
-			 int Teacher_teacherid = rs.getInt(11);
-			 int Company_companyid = rs.getInt(12);
+			 int Teacher_teacherid = rs.getInt(9);
+			 int Company_companyid = rs.getInt(10);
 		
 			
-			 ListStu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,averagescorevideo,averagescorereport,Teacher_teacherid,Company_companyid);
+			 ListStu = new Student (idstudent,studentname,studentlastname,password,workposition,startdate,enddate,semester,Teacher_teacherid,Company_companyid);
 		}
 		
 		con.close();

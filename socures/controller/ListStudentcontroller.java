@@ -176,6 +176,32 @@ public class ListStudentcontroller {
 		
 		return "ListStudentPage";
 	}
+	
+	
+	@RequestMapping(value = "/loadnameSUTPageD" , method=RequestMethod.GET)
+	public String loadnameSUTPageD(HttpServletRequest request ,Model md , HttpSession session) {
+		
+		ListStudentDB STU = new ListStudentDB();
+		try {
+			request.setCharacterEncoding("UTF-8");
+			}catch(UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+			}
+		
+		String STUid = request.getParameter("studentid");
+		
+		List<report> RP = STU.AllListreportname(STUid);
+		if(RP.size() == 0 ) {
+		boolean error = STU.isDeleteStudent1(STUid);
+		}
+		
+		for(report R : RP) {
+		boolean error = STU.isDeleteStudent(STUid,R.getReportid());
+		}
+		
+		return "ListStudentE";
+	}
+	
 
 
 }

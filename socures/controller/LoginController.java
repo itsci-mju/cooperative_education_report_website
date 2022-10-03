@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import bean.*;
 
 import util.LoginbyStudentDB;
+import util.ReviewCompanyDB;
 import util.notifysendingreportDB;
 @Controller
 public class LoginController {
@@ -57,7 +58,8 @@ public String doLogin(HttpServletRequest request ,Model md , HttpSession session
 	
 	notifysendingreportDB HM = new notifysendingreportDB();
 	List<reportname> Listreportname = HM.AllListreportname();
-	String Error = "0";
+	String Error = null;
+	String ErrorRV = null;
 	
 	try {
 		request.setCharacterEncoding("UTF-8");
@@ -68,7 +70,7 @@ public String doLogin(HttpServletRequest request ,Model md , HttpSession session
 	String uname = request.getParameter("uname");
 	String pwd = request.getParameter("pwd");
 
-	Student stu = new Student(uname,"","",pwd,"",null,null,"",0,0,0,0);
+	Student stu = new Student(uname,"","",pwd,"",null,null,"",0,0);
 
 	LoginbyStudentDB sm = new LoginbyStudentDB();
 	stu = sm.verifyLoginSTU(stu);
@@ -131,15 +133,44 @@ public String doLogin(HttpServletRequest request ,Model md , HttpSession session
                              break;
                             }
                             
-                	 }
-                	 Error = R.getReportname();
+                	 }else {
+                		 Error = R.getReportname();
+                	 }         	
                  }
 				
 			}
 			
 			
 		}
+		
+		
+		Date dtRV = new Date(stu.getEnddate().getTime());
+		Calendar c = Calendar.getInstance();
+		c.setTime(dtRV);
+		dtRV = c.getTime();
+
+		Date ddRV = new Date();
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(ddRV);
+		c1.add(Calendar.YEAR,543);
+		ddRV = c1.getTime();
+		
+		ReviewCompanyDB RVC = new ReviewCompanyDB();
+		Review review = null;
+		
+		if(ddRV.after(dtRV)){
+		try{
+		review = RVC.Searchreviewid(stu.getIdstudent());
+		}catch(Exception e) {
+		review = null;
+		}
+		
+		if(review == null){
+			ErrorRV = "1";
+		}
+		}
 		request.setAttribute("Error", Error);
+		request.setAttribute("ErrorRV", ErrorRV);
 		session.setAttribute("student", stu);
 		return "index";
 	}else {
@@ -176,6 +207,8 @@ public String loginTC(HttpServletRequest request ,Model md , HttpSession session
 		//response.sendRedirect("login.jsp");
 		return "LoginbyStudentPage";
 	}
+	
+	
 	
 }
 

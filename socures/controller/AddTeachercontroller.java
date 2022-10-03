@@ -70,6 +70,29 @@ public class AddTeachercontroller {
 		return "ListTeacherProfile";
 	}
 	
+	
+	@RequestMapping(value = "/loadStatusTeacherposition" , method = RequestMethod.GET)
+	public String loadStatusTeacherposition(HttpServletRequest  request ,HttpSession session) {
+		
+		int error = 0;
+		
+		String Teacherid = request.getParameter("Teacherid");
+		String Tid = request.getParameter("Tid");
+		
+		
+		addTeacherDB teacher = new addTeacherDB();
+		error  = teacher.UPDATEStatusTeacherposition(Teacherid);
+		
+		error  = teacher.UPDATEStatusTeacheris2(Tid);
+		
+		session.setMaxInactiveInterval(1);
+		session.removeAttribute("student");
+		session.removeAttribute("teacher");
+		return "index";
+		
+	}
+	
+	
 	@RequestMapping(value = "/loadDETeacher" , method = RequestMethod.GET)
 	public String loadDETeacher(HttpServletRequest  request ,HttpSession session) {
 		
@@ -117,10 +140,10 @@ public class AddTeachercontroller {
 			
 			
 			if(imageUpload != "") {
-				teacher Teacher = new teacher(Teacherid,teachername,teacherlastname,phonenumber,teacheremail,"123456","2",MaxTeacher+"_Mentor.png","อยู่");
+				teacher Teacher = new teacher(Teacherid,teachername,teacherlastname,phonenumber,teacheremail,phonenumber,"2",MaxTeacher+"_Mentor.png","อยู่");
 			 error = sm.addTeacher(Teacher);
 			}else {
-				teacher Teacher = new teacher(Teacherid,teachername,teacherlastname,phonenumber,teacheremail,"123456","2","user.png","อยู่");
+				teacher Teacher = new teacher(Teacherid,teachername,teacherlastname,phonenumber,teacheremail,phonenumber,"2","user.png","อยู่");
 				 error = sm.addTeacher(Teacher);
 			}
 			 String path = request.getSession().getServletContext().getRealPath("/") + "//images//";
@@ -129,20 +152,23 @@ public class AddTeachercontroller {
 			 }
 		
 			}catch (Exception e) {
-				e.printStackTrace();				
+				e.printStackTrace();
+				error = -1;
 				}	
 	}
-		if(error == -1) { 
-			return "AddTeacherProfile"; 
-		}else {
+		
+		if(error == 1) {
 			addTeacherDB Listteacher = new addTeacherDB();
 			List<teacher> Teacher = Listteacher.AllListteacher();
 			
 			session.setAttribute("teacherlist", Teacher);
-			
+			request.setAttribute("error",error);
 			return "ListTeacherProfile";
-
+		}else {
+			request.setAttribute("error",error);
+			return "AddTeacherProfile";
 		}
+		
 	}
 
 }

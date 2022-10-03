@@ -102,6 +102,7 @@ public class addmentorcontroller {
 				}	
 	}
 		if(error == -1) { 
+			request.setAttribute("error", error);
 			return "addmentorPage"; 
 		}else {
 			Student student = (Student)session.getAttribute("student");

@@ -16,8 +16,6 @@ public class Student {
 	private Date startdate;
 	private Date enddate;
 	private String semester;
-	private double averagescorevideo;
-	private double averagescorereport;
 	private int Teacher_teacherid;
 	private int Company_companyid;
 	
@@ -26,8 +24,7 @@ public class Student {
 	}
 
 	public Student(String idstudent, String studentname, String studentlastname, String password, String workposition,
-			Date startdate, Date enddate, String semester, double averagescorevideo, double averagescorereport,
-			int teacher_teacherid, int company_companyid) {
+			Date startdate, Date enddate, String semester,int teacher_teacherid, int company_companyid) {
 		super();
 		this.idstudent = idstudent;
 		this.studentname = studentname;
@@ -37,8 +34,6 @@ public class Student {
 		this.startdate = startdate;
 		this.enddate = enddate;
 		this.semester = semester;
-		this.averagescorevideo = averagescorevideo;
-		this.averagescorereport = averagescorereport;
 		Teacher_teacherid = teacher_teacherid;
 		Company_companyid = company_companyid;
 	}
@@ -75,13 +70,6 @@ public class Student {
 		return semester;
 	}
 
-	public double getAveragescorevideo() {
-		return averagescorevideo;
-	}
-
-	public double getAveragescorereport() {
-		return averagescorereport;
-	}
 
 	public int getTeacher_teacherid() {
 		return Teacher_teacherid;
@@ -121,14 +109,6 @@ public class Student {
 
 	public void setSemester(String semester) {
 		this.semester = semester;
-	}
-
-	public void setAveragescorevideo(double averagescorevideo) {
-		this.averagescorevideo = averagescorevideo;
-	}
-
-	public void setAveragescorereport(double averagescorereport) {
-		this.averagescorereport = averagescorereport;
 	}
 
 	public void setTeacher_teacherid(int teacher_teacherid) {

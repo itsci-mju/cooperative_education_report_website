@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import bean.*;
 import util.EditTeacherProfileDB;
 import util.LoginbyStudentDB;
+import util.teacherManager;
 @Controller
 public class EditTeacherProfilecontroller {
 
@@ -50,8 +51,10 @@ public String loadViewTeacherProfile() {
 public String EditStudentProfile(HttpServletRequest  request, HttpSession session) {
 	int error = 0;
 	EditTeacherProfileDB md = new EditTeacherProfileDB();
+	teacherManager TM = new teacherManager();
 	int Teacheridint = 0;
 	teacher Teacher = null;
+	teacher TeacherE = null;
 	
 	if (ServletFileUpload.isMultipartContent(request)) {
 		try {
@@ -67,6 +70,7 @@ public String EditStudentProfile(HttpServletRequest  request, HttpSession sessio
 	
 
 	Teacheridint = Integer.parseInt(teacherid);
+	TeacherE = TM.Searchteacherid(Teacheridint);
 	
 	Date dd = new Date();
 	Calendar c1 = Calendar.getInstance();
@@ -81,7 +85,7 @@ public String EditStudentProfile(HttpServletRequest  request, HttpSession sessio
 	 data.get(0).write(new File(path +File.separator +Teacheridint+"_"+date1+"_Teacher.png"));	
 	 
 	}else {
-		Teacher = new teacher(Teacheridint,teachername,teacherlastname,phonenumber,teacheremail,password,"","user.png","");
+		Teacher = new teacher(Teacheridint,teachername,teacherlastname,phonenumber,teacheremail,password,"",TeacherE.getTeacherimg(),"");
 	}
 	
 	 error = md.UPDATESTeacher(Teacher);		
@@ -91,15 +95,12 @@ public String EditStudentProfile(HttpServletRequest  request, HttpSession sessio
 			e.printStackTrace();				
 			}	
 }
-	if(error == 1) { 
+	
 		LoginbyStudentDB LS = new LoginbyStudentDB();
 		Teacher = LS.verifyLoginTC(Teacher);
 		session.setAttribute("teacher", Teacher);
+		request.setAttribute("error", error);
 		return "EditTeacherProfile";
-	}else {
-		
-		return "EditTeacherProfile";
-	}
 	
 }
 

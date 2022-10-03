@@ -145,6 +145,34 @@ public class addTeacherDB {
 		
 		} 
 	
+	
+	public int UPDATEStatusTeacherposition(String Teacherid)    {  
+		try{  
+			ConnectionDB dbcon = new ConnectionDB();
+       Connection conn = dbcon.getConnection();   
+       Statement statment = conn.createStatement(); 
+       statment.execute("UPDATE teacher SET teachertype = '3'  WHERE teacherid = '"+Teacherid+"'"); 
+       conn.close();
+       return 1; 
+       }catch(Exception e){          
+    	   return -1; }   
+		
+		} 
+	
+	public int UPDATEStatusTeacheris2(String Teacherid)    {  
+		try{  
+			ConnectionDB dbcon = new ConnectionDB();
+       Connection conn = dbcon.getConnection();   
+       Statement statment = conn.createStatement(); 
+       statment.execute("UPDATE teacher SET teachertype = '2'  WHERE teacherid = '"+Teacherid+"'"); 
+       conn.close();
+       return 1; 
+       }catch(Exception e){          
+    	   return -1; }   
+		
+		} 
+	
+	
 	public int UPDATEDETeacher(String Teacherid )    {  
 		try{  
 			ConnectionDB dbcon = new ConnectionDB();

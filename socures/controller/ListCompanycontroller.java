@@ -176,9 +176,10 @@ public class ListCompanycontroller {
 		if(error == 1) {
 			List<Company> company = ListStu.SearchcompanyALL1();
 			session.setAttribute("ListCompany",company);
-			
+			request.setAttribute("error",error);
 		    return "ListCompanyE";
 		}else {
+			request.setAttribute("error",error);
 			return "AddCompany";
 		}
 	}
@@ -231,16 +232,15 @@ public class ListCompanycontroller {
 		
 		error = ListStu.UPDATECompany(com);
 		
-		if(error == 1) {
+		
 			
 			Company company = ListStu.Searchcompanyid(IDcomint);
 			
 			session.setAttribute("Company",company);
+			request.setAttribute("error",error);
 			
 		    return "EditCompany";
-		}else {
-			return "EditCompany";
-		}
+		
 	}
 
 	@RequestMapping(value = "/loadComReviewPage" , method = RequestMethod.GET)
@@ -266,6 +266,7 @@ public class ListCompanycontroller {
 		
 		session.setAttribute("vCompany",company);
 		session.setAttribute("reviewList",review);
+		
 		
 		return "ListCompanyReviewEPage";
 	}

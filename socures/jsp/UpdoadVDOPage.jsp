@@ -30,84 +30,31 @@
 <link href='https://fonts.googleapis.com/css?family=Kanit'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
+<link rel="stylesheet" href="./css/StepVDO.css">
 <link rel='stylesheet' href='css/UploadReport.css' type='text/css' />
 
-
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
 <style type="text/css">
-.container1 {
-  padding: 50px 10%;
-}
-
-.box {
-  position: relative;
-  background: #FCFAF1;
-  width: 100%;
-}
-
-.box-header {
-  color: #444;
-  display: block;
-  padding: 10px;
-  position: relative;
-  border-bottom: 1px solid #f4f4f4;
-  margin-bottom: 10px;
-}
-
-.box-tools {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-}
-
-.dropzone-wrapper {
-  border: 2px dashed #91b0b3;
-  color: #92b0b3;
-  position: relative;
-  height: 150px;
-}
-
-.dropzone-desc {
-  position: absolute;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-  width: 40%;
-  top: 50px;
-  font-size: 16px;
-}
-
-.dropzone,
-.dropzone:focus {
-  position: absolute;
-  outline: none !important;
-  width: 50%;
-  height: 150px;
-  cursor: pointer;
-  opacity: 0;
-}
-
-.dropzone-wrapper:hover,
-.dropzone-wrapper.dragover {
-  background: #ecf0f5;
-}
-
-.preview-zone {
-  text-align: center;
-}
-
-.preview-zone .box {
-  box-shadow: none;
-  border-radius: 0;
-  margin-bottom: 0;
-}
 hr.style13 {
     height: 10px;
     border: 0;
     box-shadow: 0 10px 10px -10px #880000 inset;
 }
 </style>
+
+
+<script type="text/javascript">
+
+function validateForm(frm){
+		
+	if(frm.URLvdo.value == ""){
+		alert("กรุณากรอก URL วิดีโอ");
+		return false;
+		}
+	
+}
+</script>
 
 </head>
 <body>
@@ -119,113 +66,111 @@ hr.style13 {
 				<div class="row no-gutter">
 					<div class="col-xs-12 col-md-12" style="background-image:url('./images/student.png'); background-position:right; background-repeat:no-repeat">
 
-<h3 style="color:#7EBC1B;" >ระบบอัปโหลดวีดีโอการฝึกปฏิบัติงานสหกิจศึกษา </h3>
+<h3 style="color:#7EBC1B;" >ระบบอัปโหลดวิดีโอการฝึกปฏิบัติงานสหกิจศึกษา </h3>
 <div class="nav1" style="color:#FFFFFF;"><a href="${pageContext.request.contextPath}/loadnotifyPage" style="color:#FFFFFF;">ส่งเอกสารรายงานความก้าวหน้าการฝึกสหกิจ</a> / <a class="a2" href="#" style="color:#E28A06;">อัปโหลดวิดีโอ </a></div>
 
 </div></div></div>
 <br>
 </div>
 
+<div class="container position-relative">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <div class="media">
+        <div class="media-body">
+        
+        <div class="container" align = "left">
+  
+  
+  <form  method="POST" id="frm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/uploadVDO" >
+    <div class="form-group">
+      <h3>ขั้นตอนที่ 1 </h3>
+      <h5>ให้นักศึกษาทำการอัพวิดีโอลง youtube  <a href="https://support.google.com/youtube/answer/57407?hl=th&co=GENIE.Platform%3DDesktop"> <i class="fa-solid fa-circle-info"></i> อ่านเพิ่มเติม </a> </h5>
+      <br>
+    </div>
+    
+    
+     <div class="form-group">
+      <h3>ขั้นตอนที่ 2 </h3>
+      <h5>ให้นักศึกษาทำการกดแชร์วิดีโอ <i class="fa-solid fa-arrow-right"></i> กดไปที่แชร์วิดีโอ <i class="fa-solid fa-arrow-right"></i> คัดลอก URL ทั้งหมด <a href="https://support.google.com/youtube/answer/57741?hl=th&co=GENIE.Platform%3DDesktop"> <i class="fa-solid fa-circle-info"></i> อ่านเพิ่มเติม </a> </h5>
+      <img src="./images/exampleVDO.png"
+								width="500" height="280"
+								style="border: 1px solid #ddd; border-radius: 4px; padding: 5px; object-fit: cover; object-position: 100% 0;"
+								title="" alt="">
+     
+      <br>
+    </div>
+   
+    
+    
+      <br>
+      <div class="form-group">
+      <h3>ขั้นตอนที่ 3 </h3>
+      <h5>ให้นักศึกษาทำการ ใส่ URL วิดีโอ </h5>
+      <input type="text" id="URLvdo" name="URLvdo" class="form-control data" >
+      <br>
+       <button class="btn btn-primary nextBtn btn-lg" OnClick ="return validateForm(frm)" type="submit" >Submit</button>
+    </div>
+  </form>
+  
+</div>
+
+        </div>
+        </div>
+        </div>
+       </div>
+      </div>
+
+
+<script>
+$(document).ready(function () {
+	  var navListItems = $('div.setup-panel div a'),
+	          allWells = $('.setup-content'),
+	          allNextBtn = $('.nextBtn');
+	  allWells.hide();
+	  navListItems.click(function (e) {
+	      e.preventDefault();
+	      var $target = $($(this).attr('href')),
+	              $item = $(this);
+	      if (!$item.hasClass('disabled')) {
+	          navListItems.removeClass('btn-primary').addClass('btn-default');
+	          $item.addClass('btn-primary');
+	          allWells.hide();
+	          $target.show();
+	          $target.find('input:eq(0)').focus();
+	      }
+	  });
+	  allNextBtn.click(function(){
+	      var curStep = $(this).closest(".setup-content"),
+	          curStepBtn = curStep.attr("id"),
+	          nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+	          curInputs = curStep.find("input[type='text'],input[type='url']"),
+	          isValid = true;
+	      $(".form-group").removeClass("has-error");
+	      for(var i=0; i<curInputs.length; i++){
+	          if (!curInputs[i].validity.valid){
+	              isValid = false;
+	              $(curInputs[i]).closest(".form-group").addClass("has-error");
+	          }
+	      }
+	      if (isValid)
+	          nextStepWizard.removeAttr('disabled').trigger('click');
+	  });
+	  $('div.setup-panel div a.btn-primary').trigger('click');
+	});
+</script>
 
 	<div class="container" style="margin-top: 35px;">
-	<form  method="POST" enctype="multipart/form-data" action="${pageContext.request.contextPath}/uploadVDO" >
+	
 	    <section id="content">
 				<div class="container" style="margin-top: -20px">
 					<div class="row">
 					<div class="col-lg-12">
 							<div class="container">
 							<br><br>
-							
-                              
-								<div class="form-group" align = "center">
-								   <div class="col-sm-6">
-												<div class="preview-zone hidden" >
-													<div class="box box-solid">
-														<div class="box-header with-border">
-															<div class="box-tools pull-right">
-																
-															</div>
-														</div>
-														<div class="box-body"></div>
-													</div>
-													<br>
-												</div>
-												
-												<div class="dropzone-wrapper">
-													<div class="dropzone-desc">
-														<i class="glyphicon glyphicon-download-alt"></i>
-														<p><i class='fa fa-film' style='font-size:36px'></i></p>
-														<p>เลือกไฟล์หรือลากมาที่นี่. </p>
-													</div>
-													<input type="file" name="img_logo" class="dropzone"
-														accept=".mp4">
-												</div>
-											</div>
-                                           </div>
-										
-	<script>
-		function readFile(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-
-				reader.onload = function(e) {
-					var htmlPreview = '<img width="200" src="' + e.target.result + '" />'
-							+ '<p>' + input.files[0].name + '</p>';
-					var wrapperZone = $(input).parent();
-					var previewZone = $(input).parent().parent().find(
-							'.preview-zone');
-					var boxZone = $(input).parent().parent().find(
-							'.preview-zone').find('.box').find('.box-body');
-
-					wrapperZone.removeClass('dragover');
-					previewZone.removeClass('hidden');
-					boxZone.empty();
-					boxZone.append(htmlPreview);
-				};
-
-				reader.readAsDataURL(input.files[0]);
-			}
-		}
-
-		function reset(e) {
-			e.wrap('<form>').closest('form').get(0).reset();
-			e.unwrap();
-		}
-
-		$(".dropzone").change(function() {
-			readFile(this);
-		});
-
-		$('.dropzone-wrapper').on('dragover', function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			$(this).addClass('dragover');
-		});
-
-		$('.dropzone-wrapper').on('dragleave', function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			$(this).removeClass('dragover');
-		});
-
-		$('.remove-preview').on('click', function() {
-			var boxZone = $(this).parents('.preview-zone').find('.box-body');
-			var previewZone = $(this).parents('.preview-zone');
-			var dropzone = $(this).parents('.form-group').find('.dropzone');
-			boxZone.empty();
-			previewZone.addClass('hidden');
-			reset(dropzone);
-		});
-	</script>
-										
-																																								
-								
-								
-								
-							    <br> <br>
-																
-						        <hr class="style13">
-						        <h5 style="color:#850000" > รายชื่อนักศึกษาที่เข้าร่วมฝึกสหกิจ</h5>
+                            <br><br>
+								<h5 style="color:#850000" > รายชื่อนักศึกษาที่เข้าร่วมฝึกสหกิจ</h5>								
+						        <hr class="style13">				        
 								<br>
 													
 							  <table class="table table-bordered" id="myTable">
@@ -249,21 +194,15 @@ hr.style13 {
                     </tbody>              
                 </table>
 								<br><br>
-									<div class="form-group row">
-									<div class="col-sm-12 text-center">
-										<a href="#"><button type="submit" class="btn btn-success">
-												อัปโหลดเอกสาร </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
-									</div>
-								</div>
-															
+																							
 							</div>
 					</div>
 					</div>
 				</div>
 		</section>
-	</form>
 	</div> 
+	
+
 	<jsp:include page="com/footer.jsp"></jsp:include>
 </body>
 </html>

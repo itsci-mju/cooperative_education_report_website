@@ -22,9 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import bean.*;
+import util.ListStudentDB;
 import util.ListmentorDB;
+import util.UploadReportDB;
+import util.UploadVDODB;
+import util.ViewReportDB;
+import util.ViewVDODB;
 import util.addTeacherDB;
 import util.addmentorDB;
+import util.teacherManager;
 
 @Controller
 public class AddTeachercontroller {
@@ -57,20 +63,84 @@ public class AddTeachercontroller {
 		
 		String Teacherid = request.getParameter("Teacherid");
 		String getStatus = request.getParameter("getStatus");
+		teacherManager ListTM = new teacherManager();
 		
+		ViewVDODB vdo = new ViewVDODB();
+		ViewReportDB ViewReport = new ViewReportDB();
 		addTeacherDB teacher = new addTeacherDB();
+		ListStudentDB ListStu = new ListStudentDB();
+		UploadVDODB UR = new UploadVDODB();
+		UploadReportDB URP = new UploadReportDB();
 		error  = teacher.UPDATEStatusTeacher(Teacherid,getStatus);
+		
+        if(getStatus.equals("กำลังศึกษาต่อ")) {
+        List<String> semesterList =  ListStu.AllListsemester();
+        
+        List<VDO> VDODT = vdo.AllListStuvdoDESC2(semesterList.get(0));
+        List<Student> ListSTU = ListStu.AllListStuSemester(semesterList.get(0));
+        
+        for(VDO v : VDODT) {
+        		error = ListTM.DELETEevaluatevideo1(Teacherid,v.getVideoid());
+        }
+        for(Student stu : ListSTU) {
+        	
+        	try {
+        	report R = ViewReport.Viewreport(stu.getIdstudent());
+        	error = ListTM.DELETEevaluatereport(Teacherid,R.getReportid());
+        	}catch(Exception e) {
+        		  //  Block of code to handle errors
+        		}
+        	
+        }
+        
+        }else {
+        	 List<String> semesterList =  ListStu.AllListsemester();
+        	 List<VDO> VDODT = vdo.AllListStuvdoDESC2(semesterList.get(0));
+             List<Student> ListSTU = ListStu.AllListStuSemester(semesterList.get(0));
+             
+             int idtc = Integer.parseInt(Teacherid);
+             for(VDO vdo1 : VDODT) {
+            	 List<Student> Lstd = UR.Liststudentidcom(vdo1.getCompany_companyid(),semesterList.get(0)); 
+            	 for(Student S : Lstd) {
+            	 evaluatevideo evvideo = new evaluatevideo(S.getIdstudent(),vdo1.getVideoid(),-1,null,idtc);
+            	 error = UR.addevaluatevideo(evvideo);
+            	 }    			
+             }
+             
+             for(Student stu : ListSTU) {          	
+             	try {
+             	report R = ViewReport.Viewreport(stu.getIdstudent());
+             	error = ListTM.DELETEevaluatereport(Teacherid,R.getReportid());      	
+             	evaluatereport evvreport = new evaluatereport(R.getReportid(),idtc,0,null);		
+				 error = URP.addevaluatereport(evvreport);
+             	}catch(Exception e) {
+             		  //  Block of code to handle errors
+             		}
+             	
+             }
+             
+             
+        }
 		
 		
 		addTeacherDB Listteacher = new addTeacherDB();
 		List<teacher> Teacher = Listteacher.AllListteacher();
 		
+		if(error == 1) {
+		request.setAttribute("error", 2);
+		}
+		request.setAttribute("error", error);
 		session.setAttribute("teacherlist", Teacher);
 		
 		return "ListTeacherProfile";
 	}
 	
 	
+	private int DELETEevaluatevideo(String teacherid, int videoid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	@RequestMapping(value = "/loadStatusTeacherposition" , method = RequestMethod.GET)
 	public String loadStatusTeacherposition(HttpServletRequest  request ,HttpSession session) {
 		
@@ -107,6 +177,10 @@ public class AddTeachercontroller {
 		addTeacherDB Listteacher = new addTeacherDB();
 		List<teacher> Teacher = Listteacher.AllListteacher();
 		
+		if(error == 1) {
+		request.setAttribute("error",3);
+		}
+		request.setAttribute("error",error);
 		session.setAttribute("teacherlist", Teacher);
 		
 		return "ListTeacherProfile";

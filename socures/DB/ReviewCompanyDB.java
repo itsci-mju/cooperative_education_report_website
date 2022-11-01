@@ -52,7 +52,7 @@ public class ReviewCompanyDB {
 		Connection con = condb.getConnection();
 		try {
 		Statement statment = con.createStatement();
-		statment.execute("insert into review values('"+review.getReviewid()+"','"+review.getReviewpicture()+"','"+review.getReviewdetails()+"','"+review.getReviewdate()+"','"+review.getReviewrating()+"','"+review.getStudent_studentid()+"')");
+		statment.execute("insert into review values('"+review.getReviewid()+"','"+review.getReviewpicture()+"','"+review.getReviewdetails()+"','"+review.getReviewdate()+"','"+review.getReviewrating()+"','"+review.getStatus()+"','"+review.getStudent_studentid()+"')");
 		con.close();
 		return 1;
 		
@@ -79,10 +79,11 @@ public Review Searchreviewid (String id){
 				String reviewdetails = rs.getString(3);
 				String reviewdate = rs.getString(4);
 				double reviewrating = rs.getDouble(5);
-				String Student_studentid = rs.getString(6);
+				String status = rs.getString(6);
+				String Student_studentid = rs.getString(7);
 				
 				
-				review = new Review(reviewid,reviewpicture,reviewdetails,reviewdate,reviewrating,Student_studentid);
+				review = new Review(reviewid,reviewpicture,reviewdetails,reviewdate,reviewrating,status,Student_studentid);
 		
 			}
 			con.close();
@@ -99,7 +100,7 @@ public int UPDATEreview(Review review)    {
 		ConnectionDB dbcon = new ConnectionDB();
    Connection conn = dbcon.getConnection();   
    Statement statment = conn.createStatement(); 
-   statment.execute("UPDATE review SET reviewpicture = '"+review.getReviewpicture()+"',reviewdetails = '"+review.getReviewdetails()+"',reviewdate ='"+review.getReviewdate()+"',reviewrating ='"+review.getReviewrating()+"' WHERE Student_studentid = '"+review.getStudent_studentid()+"'"); 
+   statment.execute("UPDATE review SET reviewpicture = '"+review.getReviewpicture()+"',reviewdetails = '"+review.getReviewdetails()+"',reviewdate ='"+review.getReviewdate()+"',reviewrating ='"+review.getReviewrating()+"' ,status = '"+review.getStatus()+"' WHERE Student_studentid = '"+review.getStudent_studentid()+"'"); 
    conn.close();
    return 1; 
    }catch(Exception e){          
@@ -115,7 +116,7 @@ public List<Review> reviewALL(int id){
 	try {
 		Statement stmt = con.createStatement();
 		
-		String sql = "SELECT * FROM review INNER JOIN student ON review.Student_studentid = student.studentid where student.Company_companyid = "+id+" ";
+		String sql = "SELECT * FROM review INNER JOIN student ON review.Student_studentid = student.studentid where student.Company_companyid = "+id+" and review.status = 'ผ่าน' ";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()) {
 			int reviewid = rs.getInt(1);
@@ -123,10 +124,42 @@ public List<Review> reviewALL(int id){
 			String reviewdetails = rs.getString(3);
 			String reviewdate = rs.getString(4);
 			double reviewrating = rs.getDouble(5);
-			String Student_studentid = rs.getString(6);
+			String status = rs.getString(6);
+			String Student_studentid = rs.getString(7);
 			
 			
-			Review review = new Review(reviewid,reviewpicture,reviewdetails,reviewdate,reviewrating,Student_studentid);
+			Review review = new Review(reviewid,reviewpicture,reviewdetails,reviewdate,reviewrating,status,Student_studentid);
+			reviewlist.add(review);
+		}
+		con.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return reviewlist;
+	
+}
+
+public List<Review> reviewstatus(){
+	
+	ConnectionDB condb = new ConnectionDB();
+	Connection con = condb.getConnection();
+	List<Review> reviewlist = new ArrayList<>();
+	try {
+		Statement stmt = con.createStatement();
+		
+		String sql = "SELECT * FROM review INNER JOIN student ON review.Student_studentid = student.studentid where status = 'ไม่ผ่าน'";
+		ResultSet rs = stmt.executeQuery(sql);
+		while(rs.next()) {
+			int reviewid = rs.getInt(1);
+			String reviewpicture = rs.getString(2);
+			String reviewdetails = rs.getString(3);
+			String reviewdate = rs.getString(4);
+			double reviewrating = rs.getDouble(5);
+			String status = rs.getString(6);
+			String Student_studentid = rs.getString(7);
+			
+			
+			Review review = new Review(reviewid,reviewpicture,reviewdetails,reviewdate,reviewrating,status,Student_studentid);
 			reviewlist.add(review);
 		}
 		con.close();
@@ -211,7 +244,7 @@ public double getscoreAVG(int idCom){
 	double result = 0;
 	try {
 	stmt = con.createStatement();
-	String sql = "SELECT AVG(reviewrating) FROM review INNER JOIN student ON student.studentid = review.Student_studentid where Company_companyid = '"+idCom+"'";
+	String sql = "SELECT AVG(reviewrating) FROM review INNER JOIN student ON student.studentid = review.Student_studentid where Company_companyid = '"+idCom+"' and review.status = 'ผ่าน'";
 	ResultSet rs = stmt.executeQuery(sql);
 
 	System.out.println(rs);
@@ -249,7 +282,7 @@ public String getscorING(int idCom){
 	String result = null;
 	try {
 	stmt = con.createStatement();
-	String sql = "SELECT reviewpicture FROM review INNER JOIN student ON student.studentid = review.Student_studentid where Company_companyid = '"+idCom+"'";
+	String sql = "SELECT reviewpicture FROM review INNER JOIN student ON student.studentid = review.Student_studentid where Company_companyid = '"+idCom+"' and review.status = 'ผ่าน' ";
 	ResultSet rs = stmt.executeQuery(sql);
 
 	System.out.println(rs);
@@ -265,5 +298,19 @@ public String getscorING(int idCom){
 	return result ;
 
 	}
+
+
+public int UPDATEstatusreview(String status , String idreview)    {  
+	try{  
+		ConnectionDB dbcon = new ConnectionDB();
+   Connection conn = dbcon.getConnection();   
+   Statement statment = conn.createStatement(); 
+   statment.execute("UPDATE review SET status = '"+status+"' WHERE reviewid ='"+idreview+"' "); 
+   conn.close();
+   return 1; 
+   }catch(Exception e){          
+	   return -1; }   
+	
+	} 
 	
 }

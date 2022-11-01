@@ -8,6 +8,7 @@ ListCompanyDB LC = new ListCompanyDB();
 teacherManager TM = new teacherManager();
 String Companyid = (String)session.getAttribute("Companyid");
 List<Student> listStu = null;
+List<AddStudent> listStudent = null;
 
 try {
  listStu = (List)session.getAttribute("listSTU");
@@ -17,6 +18,16 @@ try {
 }
 %>
 
+
+<% 
+try {
+listStudent = (List)session.getAttribute("listStudent");
+} catch (Exception e) {
+	e.printStackTrace();
+	listStudent = null;
+}
+%>
+	
 	
 <%List error = null; %>
 <%
@@ -178,10 +189,7 @@ hr.style13 {
 
 <div class="alert">
   <span class="closebtn">&times;</span>  
-  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
-  <%for(int i = 0 ; error.size() > i ; i++){ %>
-    รหัสนักศึกษา : <%=error.get(i)%>
-  <%} %>
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่เนื่องจากมีข้อมูลซํ้ากันในระบบ 
   <%} %>
 </div>
 <%} %>
@@ -210,14 +218,18 @@ hr.style13 {
 										<input type="text" id="yearE" name="yearE"
 											class="form-control data">
 									</div>
-									<div class="col-sm-5">
+									<div class="col-sm-5">	
+									<div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="ภาคเรียนที่ 1">
+                                             <label class="form-check-label" for="inlineRadio1">ภาคเรียนที่ 1 </label>
+                                        </div>  
 										<div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="V1">
+                                             <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="ภาคเรียนที่ 2">
                                              <label class="form-check-label" for="inlineRadio1">ภาคเรียนที่ 2 </label>
                                         </div>   
                                         <div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="V2">
-                                             <label class="form-check-label" for="inlineRadio1"> ซัมเมอร์ </label>
+                                             <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" value="ปิดเทอมภาคฤดูร้อน">
+                                             <label class="form-check-label" for="inlineRadio1"> ปิดเทอมภาคฤดูร้อน </label>
                                         </div>                                    
 									</div>
 									
@@ -247,17 +259,22 @@ $(".custom-file-input").on("change", function() {
 										<a href="#"><button type="submit" class="btn btn-success"><i class="fa-sharp fa-solid fa-file-import"></i>
 												นําเข้าข้อมูลนักศึกษา </button></a>
 									</div>
-								</div>
-								<br><br>                          
+									<br><br>
+									
+								</div>                        
 							</div>
 						</div>	
 						 </form>
+						 <div class="col-sm-12 text-center">									
+										<a href="./document/Book3.xlsx" download="ExcelFileExample"><button class="btn btn-primary"><i class="fa-solid fa-circle-down"></i>
+												ตัวอย่างไฟล์ Excel </button></a>
+									</div>
 						 </div>
 						 </div>
 						 </div>
 						 </div>
-						 
-						<%if(listStu != null){ %>
+						 <%try { %>
+						<%if(listStudent != null){ %>
 						
 						<div class="container">
 							<h3 style="color:#850000;" >ข้อมูลนักศึกษา </h3>
@@ -274,17 +291,23 @@ $(".custom-file-input").on("change", function() {
                             <th>อาจารย์ที่ปรึกษา </th>                    
                         </tr> 
                     </thead>   
-                    <tbody>               
-                   <%for(Student S : listStu){ %>
-                 <tr align = "center">
+                    <tbody>   
+                                
+                   <%for(AddStudent S : listStudent){ %>
+                   <%int E = 0;%>
+                   <%String bgcolorString = "#FCFAF1";%>
+                  <%for(int i=0;i<error.size();i++){ 
+                       if(error.get(i).equals(S.getIdstudent())){ 
+                       E = 1;
+                       bgcolorString = "#F44336";
+                       break;
+                       } %>
+                  <%} %>
+                 <tr align = "center" bgcolor=<%=bgcolorString%>>
                   <th><%=S.getIdstudent()%></th>
                   <th style="white-space:nowrap"><%=S.getStudentname()%> <%=S.getStudentlastname()%></th>
                   <th><%=S.getWorkposition()%></th>
-                  
-                
-					
-                  <%Company cp = LC.Searchcompanyid(S.getCompany_companyid());%> 
-                  <th><%=cp.getCompanyname() %></th>
+                  <th><%=S.getCompany_companyname()%></th>
                  
                   
                   
@@ -303,14 +326,16 @@ $(".custom-file-input").on("change", function() {
 								<th style="white-space:nowrap"><i class='fa fa-calendar'></i> วันที่ <%=date%> - <%=date2%></th>	
 		
 					   
-                  <%teacher TC = TM.Searchteacherid(S.getTeacher_teacherid()); %> 
-                  <th><%=TC.getTeachername() %></th>
+                  <th><%=S.getTeacher_teachername()%></th>
                 
                    
                  </tr>   
      
                 <%} %>  
                 <%}%>
+                <%} catch (Exception e) {
+                	e.printStackTrace();
+                } %>
 				                             
                     </tbody>                                 
                 </table>

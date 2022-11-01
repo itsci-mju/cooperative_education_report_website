@@ -5,6 +5,17 @@
 
  
 <%Student student = (Student)session.getAttribute("student");%>
+
+<%int error = 0; %>
+
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +37,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Kanit' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
+<link rel="stylesheet" href="./css/Alert.css">
 
 
 
@@ -98,6 +110,71 @@ hr.style13 {
     box-shadow: 0 10px 10px -10px #880000 inset;
 }
 </style>
+
+<script type="text/javascript">
+
+function validateForm(frm){
+	var patt = /^[0]{1}[8|9|6]{1}[0-9]{8,}/;
+	var regexp =/^[ก-์|A-Za-z|.]{2,45}$/;
+	var regex_email = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*\@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.([a-zA-Z]){2,4})$/;
+	var regexpPW =/^[A-Za-z|0-9]{10,}$/;
+	
+	var regename =/^[ก-์|A-Za-z|.]{2,20}$/;
+	var regenameC =/^[ก-์|A-Za-z|.| ]{2,20}$/;
+	
+	if (regexp.test(frm.mentorname.value)==false){
+		alert("กรุณากรอกชื่อเป็นภาษาไทยและภาษาอังกฤษ  ความยาว 2-45 ตัวอักษร");
+		frm.mentorname.value ="";
+		return false;
+		}
+	
+	if (regexp.test(frm.lastname.value)==false){
+		alert("กรุณากรอกนามสกุลเป็นภาษาไทยและภาษาอังกฤษ  ความยาว 2-45 ตัวอักษร");
+		frm.lastname.value ="";
+		return false;
+		}
+	
+	if (regename.test(frm.mentornickname.value)==false){
+		alert("กรุณากรอกชื่อเล่นเป็นภาษาไทยและภาษาอังกฤษ  ความยาว 2-20 ตัวอักษร");
+		frm.mentornickname.value ="";
+		return false;
+		}
+	
+	
+	if(frm.mentorposition.value == ""){
+		alert("กรุณากรอกตำแหน่งงานพี่เลี้ยง");
+		return false;
+		}
+	if (regenameC.test(frm.mentorposition.value)==false){
+		alert("กรุณากรอกตำแหน่งงานพี่เลี้ยงเป็นภาษาไทยและภาษาอังกฤษ  ความยาว 2-20 ตัวอักษร");
+		frm.mentorposition.value ="";
+		return false;
+		}
+	
+	if(!patt.test(document.getElementById('phonenumber').value)){
+		alert("กรุณากรอกเบอร์โทรเป็นตัวเลขเท่านั้น 0 - 9 เเละ ความยาว 10 ตัวเลข ");
+		return false ;
+		}
+	
+	if (regex_email.test(frm.metoremail.value)==false){
+		alert("รูปแบบ email ไม่ถูกต้อง");
+		frm.metoremail.value ="";
+		return false;
+		}
+	
+	if(frm.metorline.value == ""){
+		alert("กรุณากรอกข้อมูลline");
+		return false;
+		}
+	
+	if(frm.metorfacebook.value == ""){
+		alert("กรุณากรอกข้อมูลfacebook");
+		return false;
+		}
+	
+}
+</script>
+
 <body>
 
 <jsp:include page="com/navbar.jsp"></jsp:include>
@@ -109,15 +186,23 @@ hr.style13 {
 					<div class="col-xs-12 col-md-12" style="background-image:url('./images/student.png'); background-position:right; background-repeat:no-repeat">
 
 <h3 style="color:#7EBC1B;"> เพิ่มข้อมูลพนักงานพี่เลี้ยง </h3>
-<div class="nav1" style="color:#FFFFFF;"><a href="${pageContext.request.contextPath}/loadEditStudentProfile" style="color:#FFFFFF;">แก้ไขข้อมูลสหกิจศึกษา </a> / <a class="a2" href="#" style="color:#E28A06;">เพิ่มข้อมูลพนักงานพี่เลี้ยง </a></div>
+<div class="nav1" style="color:#FFFFFF;"><a href="${pageContext.request.contextPath}/loadListmentor" style="color:#FFFFFF;">รายชื่อพนักงานพี่เลี้ยง </a> / <a class="a2" href="#" style="color:#E28A06;">เพิ่มข้อมูลพนักงานพี่เลี้ยง </a></div>
 
 </div></div></div>
 <br>
 </div>
+
+<%if(error == -1){ %>
+<div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
+</div>
+<%} %>
+
 	<div class="container" style="margin-top: 35px;">
 
 		 
-	<form  method="POST" enctype="multipart/form-data" action="${pageContext.request.contextPath}/addmentor" >
+	<form id="frm" method="POST" enctype="multipart/form-data" action="${pageContext.request.contextPath}/addmentor" >
 <br><br>
 
 			<section id="content">
@@ -198,19 +283,19 @@ $("#imageUpload").change(function() {
 									
 									<label class="col-sm-2 col-form-label text-right"><img src="./images/Line.png" width="20" height="20"> line</label>
 									<div class="col-sm-4">
-										<input type="text" id="metorline" name="metorline"
+										<input type="text" id="metorline" name="metorline" placeholder="กรณีไม่มีข้อมูลให้ใส่ - "
 											class="form-control data">
 									</div>							
 								</div>
 								  <div class="form-group row">
 									<label class="col-sm-2 col-form-label text-right"><i class="fa fa-envelope" aria-hidden="true" style="color: #FD4648" ></i> email</label>
 									<div class="col-sm-4">
-										<input type="text" id="metoremail" name="metoremail"
+										<input type="text" id="metoremail" name="metoremail" 
 											class="form-control data">
 									</div>	
 									<label class="col-sm-2 col-form-label text-right"><i class="fa fa-facebook-official" style="color: #17A8FC" ></i> facebook</label>
 									<div class="col-sm-4">
-										<input type="text" id="metorfacebook" name="metorfacebook"
+										<input type="text" id="metorfacebook" name="metorfacebook" placeholder="กรณีไม่มีข้อมูลให้ใส่ - "
 											class="form-control data">
 									</div>						
 								</div>
@@ -220,9 +305,10 @@ $("#imageUpload").change(function() {
                    <br><br><br>
 								<div class="form-group row">
 									<div class="col-sm-12 text-center">
-										<a href="#"><button type="submit" class="btn btn-success">
+										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
 												ยืนยัน</button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										
+										<a href = "${pageContext.request.contextPath}/loadListmentor" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
                     
@@ -233,7 +319,18 @@ $("#imageUpload").change(function() {
 			</section>
 
 		</form>
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
 
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script> 
 
 	</div>
 	<jsp:include page="com/footer.jsp"></jsp:include>

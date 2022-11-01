@@ -15,6 +15,16 @@
     UploadVDODB UR = new UploadVDODB();
 %>
 
+<%int error = 0; %>
+
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,6 +55,7 @@ hr.style13 {
 <link href='https://fonts.googleapis.com/css?family=Kanit'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
+<link rel="stylesheet" href="./css/Alert.css">
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>	
 	
 
@@ -65,6 +76,19 @@ hr.style13 {
 </div></div></div>
 <br>
 </div>
+
+<%if(error == 1){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> บันทึกข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+<%if(error == -1){ %>
+<div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
+</div>
+<%} %>
 
 	<div class="container" style="margin-top: 35px;">
 		<br> <br>
@@ -335,6 +359,19 @@ hr.style13 {
 			</div>
 		</section>
 	</div>
+	
+	<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script> 
   <jsp:include page="com/footer.jsp"></jsp:include>
 </body>
 </html>

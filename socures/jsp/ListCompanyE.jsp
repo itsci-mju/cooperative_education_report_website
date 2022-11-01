@@ -20,14 +20,13 @@ try{
 
 <style type="text/css">
 
-
 p {
 font-family: "Webly Sleek SemiLight",Helvetica-,droid sans,sans-serif;
 font-weight: normal;
 margin: 0 0 1rem;
 }
 
-.centerbox {position: absolute;top:50%;
+.centerbox {position: absolute;top:60%;
 left:50%;
 transform: translate(-50%, -50%);
 -ms-transform: translate(-50%, -50%); /* IE 9 */
@@ -172,10 +171,7 @@ hr.style13 {
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
 <link rel="stylesheet" href="./css/Alert.css">
-
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
-
 </head>
 <body>
 <jsp:include page="com/navbar.jsp"></jsp:include>
@@ -201,27 +197,37 @@ hr.style13 {
 </div>
 <%} %>
 
-	<div class="container" style="margin-top: 100px;">
-<form name="frm" method="post" action="${pageContext.request.contextPath}/loadListCompanyEname" >
-	<div class="form-group row">
+	<div class="container" style="margin-top: 35px;">
+		<br> <br>
+		<section id="content">
+			<div class="container" style="margin-top: -20px">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							<h3 style="color:#850000">รายชื่อบริษัท</h3>
+							<hr class="style13">						
+						  </div>
+						  <br><br><br><br>
+						  <form name="frm" method="post" action="${pageContext.request.contextPath}/loadListCompanyEname" >
+	                      <div class="form-group row">
 							<div class="centerbox">
                            <div class="main-form-container">                        
                            
-                           <input type="text" class="main-input main-name" name="NAME" id="NAME" placeholder ="กรุณากรอกข้อมูล" onfocus="clearText(this)" onblur="replaceText(this)" />                                  
-                            <select name="search" id="search" class="main-btn">                                                                                                                        
-                                            <option value="Company">ชื่อบริษัท</option>                                                                           
-                                         </select>
+                           <input type="text" class="main-input main-name" name="NAME" id="NAME" placeholder ="กรุณากรอกข้อมูล " onfocus="clearText(this)" onblur="replaceText(this)" />                                  
+                           <input  name="search" id="search" value=" ชื่อบริษัท" class="main-btn" disabled/> 
                          
                            <input id="main-submit" class="" type="submit" value="ค้นหา" />
                          
                            </div>
                            </div>
                            </div>
-</form>
-
-                <div align = "right">
+                          </form>
+				     </div>
+				     
+				<div style="margin-left: 950px;">
 				<a href = "${pageContext.request.contextPath}/loadAddCompanyE" class="btn btn-primary" ><i class="fa fa-fw -square -circle fa-plus-square" ></i> เพิ่มข้อมูลบริษัท </a>			
 				</div>
+				
    <table class="table table-bordered" id="myTable">
                     <thead class="table-info">
                         <tr align = "center">
@@ -261,8 +267,11 @@ hr.style13 {
                     </tbody>    
                               
                 </table>
-			  			      
-	</div>
+				 </div>
+		     </div>
+       </section>
+     </div>
+	
 	
 <script>
 var close = document.getElementsByClassName("closebtn");
@@ -276,6 +285,44 @@ for (i = 0; i < close.length; i++) {
   }
 }
 </script>  
+
+<script type="text/javascript">
+$(document).ready(
+        function() {
+            $('#myTable').after(
+                    '<div id="nav" class="pagination" ></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#myTable tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav')
+                        .append(
+                                '<a href="#" rel="'+i+'" >' + pageNum
+                                        + '</a> ');
+            }
+            $('#myTable tbody tr').hide();
+            $('#myTable tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind(
+                    'click',
+                    function() {
+
+                        $('#nav a').removeClass('active');
+                        $(this).addClass('active');
+                        var currPage = $(this).attr('rel');
+                        var startItem = currPage * rowsShown;
+                        var endItem = startItem + rowsShown;
+                        $('#myTable tbody tr').css('opacity', '0.0')
+                                .hide().slice(startItem, endItem).css(
+                                        'display', 'table-row')
+                                .animate({
+                                    opacity : 1
+                                }, 300);
+                    });
+        });
+</script>
+
 
 
 	             <jsp:include page="com/footer.jsp"></jsp:include>

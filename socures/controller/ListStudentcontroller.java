@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import bean.*;
 import util.ListCompanyDB;
 import util.ListStudentDB;
+import util.ReviewCompanyDB;
+import util.teacherManager;
 @Controller
 public class ListStudentcontroller {
 
@@ -123,6 +125,11 @@ public class ListStudentcontroller {
 	}
 	
 	
+	@RequestMapping(value = "/ExportStudentPage" , method = RequestMethod.GET)
+	public String ViewExportSummaryReport(HttpServletRequest  request ,HttpSession session) {	
+		
+		return "ExportStudent";
+	}
 	
 	
 	
@@ -173,7 +180,7 @@ public class ListStudentcontroller {
 			i++;
 			
 		}
-		
+		request.setAttribute("error",error);
 		return "ListStudentPage";
 	}
 	
@@ -181,7 +188,10 @@ public class ListStudentcontroller {
 	@RequestMapping(value = "/loadnameSUTPageD" , method=RequestMethod.GET)
 	public String loadnameSUTPageD(HttpServletRequest request ,Model md , HttpSession session) {
 		
+		ReviewCompanyDB RVC = new ReviewCompanyDB();
 		ListStudentDB STU = new ListStudentDB();
+		String getSemester = (String)session.getAttribute("getSemester");
+		int error1 = 0;
 		try {
 			request.setCharacterEncoding("UTF-8");
 			}catch(UnsupportedEncodingException e1) {
@@ -189,15 +199,33 @@ public class ListStudentcontroller {
 			}
 		
 		String STUid = request.getParameter("studentid");
+		Student STUALL = STU.SStuid(STUid);
 		
 		List<report> RP = STU.AllListreportname(STUid);
+			 
+		 
 		if(RP.size() == 0 ) {
 		boolean error = STU.isDeleteStudent1(STUid);
+		
+		 double AVG = RVC.getscoreAVG(STUALL.getCompany_companyid());
+		 Double avg= ( Math.floor(AVG * 100) / 100 );
+		  error1 = RVC.UPDATEAVG(avg,STUALL.getCompany_companyid());
 		}
 		
 		for(report R : RP) {
 		boolean error = STU.isDeleteStudent(STUid,R.getReportid());
+		
+		 double AVG = RVC.getscoreAVG(STUALL.getCompany_companyid());
+		 Double avg= ( Math.floor(AVG * 100) / 100 );
+		  error1 = RVC.UPDATEAVG(avg,STUALL.getCompany_companyid());
 		}
+		
+		List<Student> student = null;
+		student = STU.AllListStuE(getSemester);
+		
+		request.setAttribute("error",error1);
+		session.setAttribute("student",student);
+		session.setAttribute("getSemester",getSemester);
 		
 		return "ListStudentE";
 	}

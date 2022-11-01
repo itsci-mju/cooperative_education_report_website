@@ -45,11 +45,12 @@ public class ViewVDODB {
 				 String filename = rs.getString(2);
 				 String sentdate = rs.getString(3);
 				 String status = rs.getString(4);
-				 int Company_companyid = rs.getInt(5);
+				 String semester = rs.getString(5);
+				 int Company_companyid = rs.getInt(6);
 				 
 			
 				
-				v = new VDO (videoid,filename,sentdate,status,Company_companyid);
+				v = new VDO (videoid,filename,sentdate,status,semester,Company_companyid);
 			}
 			con.close();
 		} catch (SQLException e) {
@@ -132,18 +133,19 @@ public List<VDO> AllListStuvdoDESC(){
 	Connection con = condb.getConnection();
 	try {
 		Statement stmt = con.createStatement();
-		String sql = "SELECT videoid,filename,sentdate,status,company_companyid FROM video INNER JOIN evaluatevideo ON video.videoid = evaluatevideo.Video_videoid GROUP BY videoid ORDER BY score DESC LIMIT 0,3";
+		String sql = "SELECT videoid,filename,sentdate,status,semester,company_companyid FROM video INNER JOIN evaluatevideo ON video.videoid = evaluatevideo.Video_videoid GROUP BY videoid ORDER BY score DESC LIMIT 0,3";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()) {
 			int videoid = rs.getInt(1);
 			 String filename = rs.getString(2);
 			 String sentdate = rs.getString(3);
 			 String status = rs.getString(4);
-			 int Company_companyid = rs.getInt(5);
+			 String semester = rs.getString(5);	 
+			 int Company_companyid = rs.getInt(6);
 			 
 		
 			
-			 VDO v = new VDO (videoid,filename,sentdate,status,Company_companyid);
+			 VDO v = new VDO (videoid,filename,sentdate,status,semester,Company_companyid);
 			 Listvdo.add(v);
 		}
 		
@@ -160,18 +162,19 @@ public List<VDO> AllListStuvdoDESC1(){
 	Connection con = condb.getConnection();
 	try {
 		Statement stmt = con.createStatement();
-		String sql = "SELECT videoid,filename,sentdate,status,company_companyid FROM video INNER JOIN evaluatevideo ON video.videoid = evaluatevideo.Video_videoid GROUP BY videoid ORDER BY score DESC";
+		String sql = "SELECT videoid,filename,sentdate,status,semester,company_companyid FROM video INNER JOIN evaluatevideo ON video.videoid = evaluatevideo.Video_videoid GROUP BY videoid ORDER BY score DESC";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()) {
 			int videoid = rs.getInt(1);
 			 String filename = rs.getString(2);
 			 String sentdate = rs.getString(3);
 			 String status = rs.getString(4);
-			 int Company_companyid = rs.getInt(5);
+			 String semester = rs.getString(5);	 
+			 int Company_companyid = rs.getInt(6);
 			 
 		
 			
-			 VDO v = new VDO (videoid,filename,sentdate,status,Company_companyid);
+			 VDO v = new VDO (videoid,filename,sentdate,status,semester,Company_companyid);
 			 Listvdo.add(v);
 		}
 		
@@ -182,4 +185,33 @@ public List<VDO> AllListStuvdoDESC1(){
 	return Listvdo;
 }	
 
+
+public List<VDO> AllListStuvdoDESC2(String Semester){
+	List<VDO> Listvdo = new ArrayList<>();
+	ConnectionDB condb = new ConnectionDB();
+	Connection con = condb.getConnection();
+	try {
+		Statement stmt = con.createStatement();
+		String sql = "SELECT videoid,filename,sentdate,status,semester,company_companyid FROM video INNER JOIN evaluatevideo ON video.videoid = evaluatevideo.Video_videoid where semester like '"+Semester+"'  GROUP BY videoid ORDER BY score DESC ;";
+		ResultSet rs = stmt.executeQuery(sql);
+		while(rs.next()) {
+			int videoid = rs.getInt(1);
+			 String filename = rs.getString(2);
+			 String sentdate = rs.getString(3);
+			 String status = rs.getString(4);
+			 String semester = rs.getString(5);	 
+			 int Company_companyid = rs.getInt(6);
+			 
+		
+			
+			 VDO v = new VDO (videoid,filename,sentdate,status,semester,Company_companyid);
+			 Listvdo.add(v);
+		}
+		
+		con.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return Listvdo;
+}	
 }

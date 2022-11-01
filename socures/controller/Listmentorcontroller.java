@@ -34,22 +34,24 @@ public class Listmentorcontroller {
 		ListmentorDB   HM = new ListmentorDB();
 		List<Mentor> st = HM.AllListmentor(student.getIdstudent());
 		session.setAttribute("listmentors", st);
-		return "EditStudentProfile";
+		return "ListmentorPage";
 	}
 
 	@RequestMapping(value = "/loaddeletmentor" , method = RequestMethod.GET)
 	public String loaddeletmentor(HttpSession session , HttpServletRequest  request) {
-		
+		int error = 0;
 		String mentorid = request.getParameter("idMentor");
 		System.out.println("idMentor = "+mentorid);
 		ListmentorDB   HM = new ListmentorDB();
-		int error = HM.deletmentor(mentorid);
+		 error = HM.deletmentor(mentorid);
 		
 		Student student = (Student)session.getAttribute("student");
 		List<Mentor> st = HM.AllListmentor(student.getIdstudent());
 		
-		return "EditStudentProfile";
+		request.setAttribute("error", error);
+		return "ListmentorPage";
 	}
+	
 
 
 }

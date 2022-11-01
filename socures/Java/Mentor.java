@@ -17,15 +17,13 @@ public class Mentor {
 	private String mentorfacebook;
 	private String phonenumber;
 	private String mentorimg;
-	private String Student_studentid;
 
 	public Mentor() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public Mentor(int mentorid, String mentorname, String mentorlastname, String mentornickname, String mentorposition,
-			String metoremail, String mentorline, String mentorfacebook, String phonenumber, String mentorimg,
-			String student_studentid) {
+			String metoremail, String mentorline, String mentorfacebook, String phonenumber, String mentorimg) {
 		super();
 		this.mentorid = mentorid;
 		this.mentorname = mentorname;
@@ -37,7 +35,6 @@ public class Mentor {
 		this.mentorfacebook = mentorfacebook;
 		this.phonenumber = phonenumber;
 		this.mentorimg = mentorimg;
-		Student_studentid = student_studentid;
 	}
 
 	public int getMentorid() {
@@ -80,9 +77,6 @@ public class Mentor {
 		return mentorimg;
 	}
 
-	public String getStudent_studentid() {
-		return Student_studentid;
-	}
 
 	public void setMentorid(int mentorid) {
 		this.mentorid = mentorid;
@@ -124,9 +118,6 @@ public class Mentor {
 		this.mentorimg = mentorimg;
 	}
 
-	public void setStudent_studentid(String student_studentid) {
-		Student_studentid = student_studentid;
-	}
 
 	
 	

@@ -151,13 +151,16 @@ public class AddStudentcontroller {
 						TSid = 0;
 					}
 					
-					String semester = null;
-					
-					if(inlineRadio1.equals("V1")) {
+					String semester = null;		
+					if(inlineRadio1.equals("ภาคเรียนที่ 1")) {
+						semester = "ภาคเรียนที่1/"+yearE;
+					}else if(inlineRadio1.equals("ภาคเรียนที่ 2")) {
 						semester = "ภาคเรียนที่2/"+yearE;
 					}else {
-						semester = "ภาคเรียนที่2/"+yearE+" "+"ซัมเมอร์";
+						semester = "ภาคเรียนที่3/"+yearE;
 					}
+						
+					
 					
 					Student STU = new Student (s.getIdstudent(),s.getStudentname(),s.getStudentlastname(),s.getPassword(),s.getWorkposition(),s.getStartdate(),s.getEnddate(),semester,TSid,COMid);
 					error = LSTU.addStudent(STU);
@@ -173,6 +176,7 @@ public class AddStudentcontroller {
 			}
 			request.setAttribute("errorlist", errorlist);
 			session.setAttribute("listSTU", Student);
+			session.setAttribute("listStudent", listStudent);		
 			ModelAndView mav = new ModelAndView("AddStudentPage");
 			return mav;
 		}

@@ -68,8 +68,12 @@ public class ReviewCompanycontroller {
 		int id = RVC.getMaxreview();
 		double ratingDouble = Double.valueOf(rating);
 		 
-		 
-		Review review = new Review(id+1,img,textReview,date1,ratingDouble,student.getIdstudent());
+		Review review = null;
+		if(ratingDouble>=3) { 
+		 review = new Review(id+1,img,textReview,date1,ratingDouble,"ผ่าน",student.getIdstudent());
+		}else {
+		 review = new Review(id+1,img,textReview,date1,ratingDouble,"ไม่ผ่าน",student.getIdstudent());
+		}
 		error = RVC.addreview(review);
 		
 		if(error == 1) {
@@ -90,8 +94,10 @@ public class ReviewCompanycontroller {
 				}	
 	}
 		if(error == -1) { 
+			request.setAttribute("error",error);
 			return "ReviewCompanyPage"; 
-		}else {						
+		}else {	
+			request.setAttribute("error",error);
 			return "ReviewCompanyPage";
 		}
 	}
@@ -161,7 +167,14 @@ public class ReviewCompanycontroller {
 		
 		
 		double ratingDouble = Double.valueOf(rating);
-		Review review = new Review(0,img,textReview,date1,ratingDouble,student.getIdstudent());
+		
+		Review review = null;
+		if(ratingDouble>=3) { 
+			 review = new Review(0,img,textReview,date1,ratingDouble,"ผ่าน",student.getIdstudent());
+		}else {
+			 review = new Review(0,img,textReview,date1,ratingDouble,"ไม่ผ่าน",student.getIdstudent());
+		}
+		
 		error = RVC.UPDATEreview(review);
 		
 		if(error == 1) {
@@ -194,8 +207,10 @@ public class ReviewCompanycontroller {
 				}	
 	}
 		if(error == -1) { 
+			request.setAttribute("error",error);
 			return "ReviewCompanyPage"; 
-		}else {						
+		}else {	
+			request.setAttribute("error",error);
 			return "ReviewCompanyPage";
 		}
 	}

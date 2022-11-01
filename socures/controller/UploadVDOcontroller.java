@@ -56,11 +56,14 @@ public class UploadVDOcontroller {
 		
 		UploadVDODB UR = new UploadVDODB();
 		List<Student> Lstd = UR.Liststudentidcom(student.getCompany_companyid(),student.getSemester());
+		int id = UR.getIDVOD(student.getIdstudent());
+		VDO Fvdo = UR.getVOD(id);
 		
 		session.setAttribute("Reportname", Reportname);
 		session.setAttribute("Reportid", Reportid);
 		session.setAttribute("Lstd", Lstd);
 		session.setAttribute("VDOid", VDOid);
+		session.setAttribute("Fvdo", Fvdo);
 		return "EditVDOPage";
 	}
 
@@ -74,6 +77,7 @@ public class UploadVDOcontroller {
 	UploadVDODB UR = new UploadVDODB();
 	List<teacher> Teacher = UR.ListTeacher();
 	 int Reportidint = Integer.parseInt(Reportid);
+	 int error = 0;
 	 
 	
 	if (ServletFileUpload.isMultipartContent(request)) {
@@ -94,14 +98,14 @@ public class UploadVDOcontroller {
 			
 			int i = getMaxVOD+1;
 			
-			VDO vdo = new VDO(i,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
-			int error1 = UR.addvdo(vdo);	
+			VDO vdo = new VDO(i,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getSemester(),student.getCompany_companyid());
+			error = UR.addvdo(vdo);	
 			
 			for(Student sd :Lstd) {
 			for(teacher TH : Teacher) {
 				if(TH.getStatus().equals("อยู่")){
-			evaluatevideo evvideo = new evaluatevideo(sd.getIdstudent(),i,0,null,TH.getTeacherid());		
-			int error2 = UR.addevaluatevideo(evvideo);	
+			evaluatevideo evvideo = new evaluatevideo(sd.getIdstudent(),i,-1,null,TH.getTeacherid());		
+			error = UR.addevaluatevideo(evvideo);	
 			}
 			}
 			}
@@ -112,6 +116,7 @@ public class UploadVDOcontroller {
 			
 			}
 	}
+	request.setAttribute("error", error);
 	return "notifysendingreportPage";
 	}
 	
@@ -126,7 +131,7 @@ public class UploadVDOcontroller {
 	UploadVDODB UR = new UploadVDODB();
 	List<teacher> Teacher = UR.ListTeacher();
 	 int Reportidint = Integer.parseInt(Reportid);
-	 
+	 int error = 0;
 	
 	if (ServletFileUpload.isMultipartContent(request)) {
 		try {
@@ -145,14 +150,15 @@ public class UploadVDOcontroller {
 			String date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").format(dd);
 			
 			
-			VDO vdo = new VDO(getMaxVOD,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getCompany_companyid());
-			int error1 = UR.Editvdo(vdo);	
+			VDO vdo = new VDO(getMaxVOD,URL,date1,"ยังไม่ได้ให้คะแนนวิดีโอ",student.getSemester(),student.getCompany_companyid());
+			error = UR.Editvdo(vdo);	
 	
 		}catch (Exception e) {
 			e.printStackTrace();
 			
 			}
 	}
+	request.setAttribute("error", error);
 	return "notifysendingreportPage";
 	}
 	

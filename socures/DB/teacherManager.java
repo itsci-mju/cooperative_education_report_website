@@ -106,5 +106,32 @@ public List<teacher> SearchteacherALL(){
 	return listteacher;
 	
 }
+
+public int DELETEevaluatereport(String Tid , int rid)    {  
+	try{  
+		ConnectionDB dbcon = new ConnectionDB();
+   Connection conn = dbcon.getConnection();   
+   Statement statment = conn.createStatement(); 
+   statment.execute("DELETE FROM evaluatereport WHERE Teacher_teacherid = '"+Tid+"' and Report_reportid = '"+rid+"'"); 
+   conn.close(); 
+   return 1; 
+   }catch(Exception e){          
+	   return -1; }   
 	
+	} 
+
+public int DELETEevaluatevideo1(String Tid , int videoid)    {  
+	try{  
+		ConnectionDB dbcon = new ConnectionDB();
+   Connection conn = dbcon.getConnection();   
+   Statement statment = conn.createStatement(); 
+   statment.execute("DELETE FROM evaluatevideo WHERE Teacher_teacherid = '"+Tid+"' and Video_videoid = '"+videoid+"'"); 
+   conn.close(); 
+   return 1; 
+   }catch(Exception e){          
+	   return -1; }   
+	
+	} 
+
+
 }

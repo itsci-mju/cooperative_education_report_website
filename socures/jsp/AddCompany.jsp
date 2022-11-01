@@ -18,7 +18,7 @@ try{
 <%int error = 0; %>
 <%
 try{
-	error = (int)request.getAttribute("errorlist");
+	error = (int)request.getAttribute("error");
 }catch(Exception e) {
 	error = 0;
 	}
@@ -67,10 +67,18 @@ function validateForm(frm){
 	
 	var patt = /^[0]{1}[8|9|6]{1}[0-9]{8,}/;
 	var regex_email = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*\@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.([a-zA-Z]){2,4})$/;
+	var regexpname =/^[ก-์|A-Za-z|0-9|.]{2,50}$/;
+	var regexpcoordinator =/^[ก-์|.| ]{2,60}$/;
+	var regexpnameC =/^[ก-์|A-Za-z|,| |0-9|.]{2,50}$/;
 	
 	if(frm.namecom.value == ""){
 		alert("กรุณากรอกชื่อบริษัท");
 		return false;
+		}
+	
+	if(!regexpnameC.test(document.getElementById('namecom').value)){
+		alert("กรุณากรอกชื่อบริษัทเป็นภาษาไทยหรือภาษาอังกฤษความยาว 2-50 ตัวอักษร");
+		return false ;
 		}
 	
 	if(frm.address.value == ""){
@@ -78,9 +86,15 @@ function validateForm(frm){
 		return false;
 		}
 	
+	
 	if(frm.coordinator.value == ""){
 		alert("กรุณากรอกชื่อผู้ประสานงาน");
 		return false;
+		}
+	
+	if(!regexpcoordinator.test(document.getElementById('coordinator').value)){
+		alert("กรุณากรอกชื่อผู้ประสานงาน");
+		return false ;
 		}
 	
 	if(!patt.test(document.getElementById('telephone').value)){
@@ -104,6 +118,7 @@ function validateForm(frm){
 		}
 }
 </script>
+
 <body>
 <jsp:include page="com/navbar.jsp"></jsp:include>
 
@@ -170,7 +185,7 @@ function validateForm(frm){
 								<div class="form-group row">
 									<label class="col-sm-2 col-form-label text-right"> ที่อยู่บริษัท </label>
 									<div class="col-sm-4">
-									<textarea id="address" name="address" rows="4" cols="50"  ></textarea>
+									<textarea id="address" name="address" rows="4" cols="50" maxlength="200" ></textarea>
 										
 									</div>	
 												
@@ -221,7 +236,7 @@ function validateForm(frm){
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
 												เพิ่มข้อมูลบริษัท </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										<a href = "${pageContext.request.contextPath}/loadListCompanyE" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 								</form>

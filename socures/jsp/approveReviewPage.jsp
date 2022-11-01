@@ -152,41 +152,7 @@ hr.style13 {
 <br>
 </div>
 <div class="container" style="margin-top: 35px;">
-<br>
-
-			<section id="content">
-					<div class="container position-relative" align = "center">
-  <div class="card mt-3 mb-3" style= "width: 50%; height: auto;">
-    <div class="card-body" >
-      <div class="media">
-        <div class="media-body">
-        <b style="word-wrap: break-word;">
-							 <a href="#" tabindex="0">
-                                <h5> บริษัท <%=company.getCompanyname()%> </h5>
-                              </a>
-                              <b style="word-wrap: break-word;">
-							  <h6> <i style="color:#5392F9;" class="fa-sharp fa-solid fa-location-dot"></i> <i><%=company.getCompanyaddress() %></i>  </h6>    
-							  </b>
-							   <b style="word-wrap: break-word;">
-							  <h6> <i style="color:#5392F9;" class="fa-solid fa-phone"></i> <i><%=company.getPhonenumber()%></i>  </h6>    
-							  </b>
-							 	<br>				 
-						
-			<ul class="social-icons">           
-              <li><a class="facebook" href="<%=company.getFacebook() %>"><i class="fa fa-facebook"></i></a></li>
-              <li><a class="dribbble" href="<%=company.getWebsite()%>"><i class="fa fa-dribbble"></i></a></li>
-              <li><a class="linkedin" href="mailto:<%=company.getEmail()%>"><i class="fa fa-envelope"></i></a></li>   
-            </ul>												
-											         
-					
-					
-							</b>
-        </div>
-        </div>
-       </div>
-     </div>
-   </div>
-			</section>    		     			      
+<br>   		     			      
 	</div>
 	
 <br><br>
@@ -216,8 +182,10 @@ hr.style13 {
                 <h5><%=S.getStudentname()%> <%=S.getStudentlastname() %></h5>         
               </div>
             </div>
-            <div class="col-auto pr-0">
-              <span class="text-muted"> <%=S.getSemester() %>  <i class="fa-sharp fa-solid fa-earth-americas"></i> <%=RV.getReviewdate()%></span>            
+            <div class="col-auto pr-0">        
+              <span class="text-muted"> <%=S.getSemester() %>  <i class="fa-sharp fa-solid fa-earth-americas"></i> <%=RV.getReviewdate()%></span>   
+              <a href="${pageContext.request.contextPath}/EdApproveReviewPage?getstatus=1&getidreview=<%=RV.getReviewid()%>&getSTUid=<%=RV.getStudent_studentid()%>" style = "margin-left:200px"><button class="btn btn-danger" ><i class="fa-solid fa-circle-xmark" style="font-size:17px"> ไม่อนุมัติให้เผยแพร่ </i></button></a>  
+              <a href="${pageContext.request.contextPath}/EdApproveReviewPage?getstatus=2&getidreview=<%=RV.getReviewid()%>&getSTUid=<%=RV.getStudent_studentid()%>" ><button class="btn btn-success" ><i class="fa-solid fa-circle-check" style="font-size:17px"> อนุมัติให้เผยแพร่ </i></button></a>         
             </div>
           </div>
            <b style="word-wrap: break-word; ">
@@ -306,6 +274,37 @@ hr.style13 {
   </div>
 </div>
 <%} %>
+<%if(reviewList.size() == 0){ %>
+<br><br>
+<div class="container" style="margin-top: 35px;">
+
+			<section id="content">
+				<div class="container" style="margin-top: -20px">
+					<div class="row">
+			
+			<div class="container position-relative">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <div class="media">
+        <div class="navbar-brand">
+        </div>
+        <div class="media-body">	
+           <h4 style="color:#FD4648;"><i class="fa-solid fa-circle-exclamation"></i> ไม่มีข้อมูลการรีวิว </h4>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        </div>
+
+<br><br>
+<br><br>
+<br><br>
+<%} %>
+
 
 <script type="text/javascript">
 $(".action-button > i").bind("webkitAnimationEnd mozAnimationEnd animationEnd", function(){

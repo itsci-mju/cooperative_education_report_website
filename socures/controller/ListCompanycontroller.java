@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import bean.*;
+import util.EditStudentProfileDB;
 import util.ListCompanyDB;
 import util.ListStudentDB;
 import util.ReviewCompanyDB;
@@ -57,17 +58,15 @@ public class ListCompanycontroller {
 			}
 		
 		String NAME = request.getParameter("NAME");
-		String search = request.getParameter("search");
 		String searchDate = request.getParameter("searchDate");
 	
 		
 		
 		ListCompanyDB ListStu = new ListCompanyDB();
 		List<Company> company = null;
-		
-		if(search.equals("Company")) {
+				
 		company = ListStu.Searchcompanyname(NAME,searchDate);
-		}
+		
 		
 		session.setAttribute("ListCompany",company);
 		session.setAttribute("semester",searchDate);
@@ -113,15 +112,10 @@ public class ListCompanycontroller {
 		ListCompanyDB ListStu = new ListCompanyDB();
 		List<Company> company = ListStu.SearchcompanyALL1();
 				
-		
 		String NAME = request.getParameter("NAME");
-		String search = request.getParameter("search");
 			
-		
-		if(search.equals("Company")) {
 		company = ListStu.SearchcompanyALLname(NAME);
-		}
-		
+			
 		session.setAttribute("ListCompany",company);
 		
 		
@@ -262,13 +256,60 @@ public class ListCompanycontroller {
 		
 		Company company = ListStu.Searchcompanyid(Companyidint);
 		List<Review> review = RC.reviewALL(Companyidint);
-		System.out.println(review.get(0).getReviewid() +" fffffffff");
 		
 		session.setAttribute("vCompany",company);
 		session.setAttribute("reviewList",review);
 		
 		
 		return "ListCompanyReviewEPage";
+	}
+	
+	
+	@RequestMapping(value = "/loadApproveReviewPage" , method = RequestMethod.GET)
+	public String loadApproveReviewPage(HttpServletRequest request ,Model md , HttpSession session) {
+		
+       
+		ListCompanyDB ListStu = new ListCompanyDB();
+		ReviewCompanyDB RC = new ReviewCompanyDB();
+		
+		
+		List<Review> review = RC.reviewstatus();
+		
+		session.setAttribute("reviewList",review);
+		
+		
+		return "approveReviewPage";
+	}
+
+	
+	@RequestMapping(value = "/EdApproveReviewPage" , method = RequestMethod.GET)
+	public String EdApproveReviewPage(HttpServletRequest request ,Model md , HttpSession session) {
+		
+        String status = request.getParameter("getstatus");
+        String idreview = request.getParameter("getidreview");
+        String getSTUid = request.getParameter("getSTUid");
+        
+        int error = 0;
+		
+		ReviewCompanyDB RC = new ReviewCompanyDB();
+		EditStudentProfileDB ES = new EditStudentProfileDB();
+		
+		if(status.equals("1") ) {
+		error = RC.UPDATEstatusreview("ไม่อนุมัติ",idreview);
+		}else {
+		error = RC.UPDATEstatusreview("ผ่าน",idreview);
+		}
+		
+		Student st = ES.verifySTU(getSTUid);
+		double AVG = RC.getscoreAVG(st.getCompany_companyid());
+		
+		 Double avg= ( Math.floor(AVG * 100) / 100 );
+		 error = RC.UPDATEAVG(avg,st.getCompany_companyid());
+		
+        List<Review> review = RC.reviewstatus();
+		session.setAttribute("reviewList",review);
+		
+		return "approveReviewPage";
 	}
 
 }

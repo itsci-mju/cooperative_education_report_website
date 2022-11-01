@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import bean.*;
+import util.EditmentorDB;
 import util.ListmentorDB;
 import util.addmentorDB;
 @Controller
@@ -69,33 +70,46 @@ public class addmentorcontroller {
 		
 	
 		addmentorDB sm = new addmentorDB();
+		EditmentorDB md = new EditmentorDB();
 		Student student = (Student)session.getAttribute("student");
 	
-		try {
-		errorM = sm.SearchMentorname(mentorname,lastname);
-		}catch (Exception e) {
-			e.printStackTrace();				
-			}	
-	      
-		if(errorM == null) {
+	
 			int MaxMentor = sm.getMaxMentor();
 			int Mentorid = MaxMentor+1;
 			
 			
 			if(mentorimg != "") {
-			Mentor mentor = new Mentor(Mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,Mentorid+"_"+date1+"_Mentor.png",student.getIdstudent());
-			 error = sm.addMentor(mentor);
+			Mentor mentor = new Mentor(Mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,Mentorid+"_"+date1+"_Mentor.png");
+			
+			Mentor mentorT = sm.SearchMentorname(mentorname,lastname);
+			
+			if(mentorT != null) {
+				error = md.UPDATEMentorED(mentor,mentorT);	
+				error = sm.addmentor_student(student.getIdstudent(),mentorT.getMentorid());
 			}else {
-				Mentor mentor = new Mentor(Mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,"user.png",student.getIdstudent());
 				 error = sm.addMentor(mentor);
+				 error = sm.addmentor_student(student.getIdstudent(),Mentorid);
+			}
+			
+			
+			 
+			}else {
+				Mentor mentor = new Mentor(Mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,"user.png");
+				Mentor mentorT = sm.SearchMentorname(mentorname,lastname);
+				
+				if(mentorT != null) {
+					 error = md.UPDATEMentorED(mentor,mentorT);	
+					 error = sm.addmentor_student(student.getIdstudent(),mentorT.getMentorid());
+				}else {
+					error = sm.addMentor(mentor);
+					 error = sm.addmentor_student(student.getIdstudent(),Mentorid);
+				}
+						 
 			}
 			 String path = request.getSession().getServletContext().getRealPath("/") + "//images//";
 			 if(mentorimg != "") {			 
 				 data.get(0).write(new File(path +File.separator +Mentorid+"_"+date1+"_Mentor.png"));	
 			 }
-		}else {
-			error = -1; 
-		}
 			
 			}catch (Exception e) {
 				e.printStackTrace();				
@@ -108,8 +122,9 @@ public class addmentorcontroller {
 			Student student = (Student)session.getAttribute("student");
 			ListmentorDB   HM = new ListmentorDB();
 			List<Mentor> st = HM.AllListmentor(student.getIdstudent());
+			request.setAttribute("error", error);
 			session.setAttribute("listmentors", st);
-			return "EditStudentProfile";
+			return "ListmentorPage";
 		}
 	}
 	}

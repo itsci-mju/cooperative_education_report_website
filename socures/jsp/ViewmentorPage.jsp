@@ -30,6 +30,7 @@
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
 
+
 <style type="text/css">
 
 .avatar-upload {
@@ -216,8 +217,10 @@ $("#imageUpload").change(function() {
 							<div class="form-group row">
 					
 						<label class="col-sm-2 col-form-label text-right"> ข้อมูลติดต่อ </label>		
-			           <ul class="social-icons">           
-                        <li><a class="facebook" href="<%=mentor.getMentorfacebook() %>"><i class="fa fa-facebook"></i></a></li>         
+			           <ul class="social-icons">  
+			           <%if(mentor.getMentorfacebook() == "-"){ %>         
+                        <li><a class="facebook" href="<%=mentor.getMentorfacebook() %>"><i class="fa fa-facebook"></i></a></li>    
+                        <%} %>     
                         <li><a class="linkedin" href="mailto:<%=mentor.getMetoremail() %>"><i class="fa fa-envelope"></i></a></li>   
                         </ul>												
 											         

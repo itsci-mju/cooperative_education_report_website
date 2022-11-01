@@ -97,8 +97,9 @@ public class UploadVDODB {
 		String filename = rs.getString(2);
 		String sentdate = rs.getString(3);
 		String status = rs.getString(4);
-		int company_companyid = rs.getInt(5);
-		result = new VDO(id,filename,sentdate,status,company_companyid);
+		String semester = rs.getString(5);
+		int company_companyid = rs.getInt(6);
+		result = new VDO(id,filename,sentdate,status,semester,company_companyid);
 		}
 
 		}catch(SQLException e) {
@@ -114,7 +115,7 @@ public class UploadVDODB {
 		Connection con = condb.getConnection();
 		try {
 		Statement statment = con.createStatement();
-		statment.execute("insert into video values('"+vdo.getVideoid()+"','"+vdo.getFilename()+"','"+vdo.getSentdate()+"','"+vdo.getStatus()+"','"+vdo.getCompany_companyid()+"')");
+		statment.execute("insert into video values('"+vdo.getVideoid()+"','"+vdo.getFilename()+"','"+vdo.getSentdate()+"','"+vdo.getStatus()+"','"+vdo.getSemester()+"','"+vdo.getCompany_companyid()+"')");
 		con.close();
 		return 1;
 		
@@ -147,7 +148,7 @@ public class UploadVDODB {
 		Connection con = condb.getConnection();
 		try {
 		Statement statment = con.createStatement();
-		statment.execute("insert into evaluatevideo values('"+Evaluatevideo.getStudent_studentid()+"','"+Evaluatevideo.getVideo_videoid()+"','"+Evaluatevideo.getScore()+"',null,'"+Evaluatevideo.getTeacher_teacherid()+"')");
+		statment.execute("insert into evaluatevideo values('"+Evaluatevideo.getStudent_studentid()+"','"+Evaluatevideo.getVideo_videoid()+"','-1',null,'"+Evaluatevideo.getTeacher_teacherid()+"')");
 		con.close();
 		return 1;
 		

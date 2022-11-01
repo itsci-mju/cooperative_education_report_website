@@ -39,6 +39,7 @@ hr.style13 {
 <link rel="stylesheet" href="./css/web_css.css">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
 </head>
 <body>
@@ -149,46 +150,7 @@ hr.style13 {
 									</div>					
 								</div>
 								<br>							 								
-								<hr class="style13">
-					          <h5 style="color:#850000">ข้อมูลพนักงานพี่เลี้ยง</h5>
-                 <br> 
-                      
-				<div id="tableSericeRequestForm">
-                <table class="table table-bordered" id="myTable">
-                    <thead class="table-info">
-                        <tr>
-                            <th>ชื่อพนักงานพี่เลี้ยง</th>
-                            <th>นามสกุลพนักงานพี่เลี้ยง</th>
-                            <th>ชื่อเล่นพนักงานพี่เลี้ยง</th>
-                            <th>อีเมล</th>
-                            <th>เบอร์โทรศัพท์</th>
-                          
-                        </tr> 
-                    </thead>   
-                    <tbody>
-                    <%ListmentorDB   HM = new ListmentorDB();
-            		List<Mentor> st = HM.AllListmentor(student.getIdstudent()); %>
-            		<%if(st.size() != 0){ %>
-                    <%for(Mentor MM : st){ %>
-                        <tr>
-                            <td><%=MM.getMentorname()%></td>
-                            <td><%=MM.getMentorlastname()%></td>
-                            <td><%=MM.getMentornickname()%></td>
-                            <td><%=MM.getMetoremail()%></td>
-                            <td><%=MM.getPhonenumber()%></td>    
-                          
-                        </tr>                    
-                    <%} %>
-                 <%}else{ %>
-                 <tr>
-                    	 <td colspan = "5" align="center"><h5 style="color:#850000"> <i class="fa fa-ban"></i> ไม่มีข้อมูลพนักงานพี่เลี้ยง </h5></td>
-                </tr>
-                    <%} %>
-                    </tbody>    
-                    
-                              
-                </table>
-				</div>	
+								
 				<br><br>
 			
 					<div class="form-group row">

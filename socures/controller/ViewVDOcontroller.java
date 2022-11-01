@@ -51,12 +51,37 @@ public class ViewVDOcontroller {
 	
 	@RequestMapping(value = "/loadViewVDOALLPage" , method = RequestMethod.GET)
 	public String loadViewVDOALLPage(HttpServletRequest  request ,HttpSession session) {
-		
-		
-		
+		 ViewVDODB vdo = new ViewVDODB(); 
+		 List<VDO> Listvdo = vdo.AllListStuvdoDESC1(); 
+		 String semester = "1";
+				 
+		 session.setAttribute("Listvdo", Listvdo);
+		 session.setAttribute("semester", semester);
 		return "ListVDOPage";
 	}
 	
+	@RequestMapping(value = "/loadViewVDOALLsemesterPage" , method = RequestMethod.POST)
+	public String loadViewVDOALLsemesterPage(HttpServletRequest  request ,HttpSession session) {
+		ViewVDODB vdo = new ViewVDODB(); 
+		
+		try {
+			request.setCharacterEncoding("UTF-8");
+			}catch(UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+			}
+		
+		List<VDO> Listvdo =null;
+		String searchDate = request.getParameter("searchDate");
+		if(searchDate.equals("1")) {
+			Listvdo  = vdo.AllListStuvdoDESC1(); 
+		}else {
+			Listvdo = vdo.AllListStuvdoDESC2(searchDate);
+		}
+			 
+		 session.setAttribute("Listvdo", Listvdo);
+		 session.setAttribute("semester", searchDate);
+		return "ListVDOPage";
+	}
 	
 
 	

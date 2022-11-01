@@ -37,7 +37,7 @@ hr.style13 {
 <link rel="stylesheet" href="./css/web_css.css">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
 <style type="text/css">
 

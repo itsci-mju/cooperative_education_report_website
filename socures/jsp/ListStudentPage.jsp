@@ -13,10 +13,7 @@
     if(getSemester.equals("")){
     	getSemester = "แสดงทั้งหมด";
     }
-    
-     
    
-    
 %>
 <%
 	ListStudentDB ListStu = new ListStudentDB();
@@ -28,7 +25,15 @@ Company Com = ListCompany.Searchcompanyid(number);
 
 ViewReportDB VReport = new ViewReportDB();
 ViewVDODB Vvdo = new ViewVDODB();
+%>
 
+<%int error = 0; %>
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
 %>
 
 <!DOCTYPE html>
@@ -51,8 +56,10 @@ ViewVDODB Vvdo = new ViewVDODB();
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Kanit'
 	rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="./css/Alert.css">
 <link rel="stylesheet" href="./css/web_css.css">
-	
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>
+
 <style type="text/css">
 p {
 font-family: "Webly Sleek SemiLight",Helvetica-,droid sans,sans-serif;
@@ -186,19 +193,27 @@ hr.style13 {
 	</style>
 
 <script type="text/javascript">
+var patt = /^[0-9]{1,2}([.])?$/;
+var patt1 = /^[0-9]{1,2}([.][0-9]{1})?$/;
 
 function  checkNumber(elm){
 	if(elm.value.match(/[^\d|.]/)){
 	alert('กรอกตัวเลขเท่านั้น');
 	elm.value='';
+	
 	}else if(elm.value>10 || elm.value<0){
 	alert('กรอกคะแนนได้ไม่เกิน 10 คะแนนเท่านั้น');
 	elm.value='';
-	}
+	
+	}else if(!patt.test(elm.value)){
+		 if(!patt1.test(elm.value)){
+			 alert('กรอกตัวเลขให้ถูกต้อง');
+				elm.value='';
+		 }
+		
+	    }
 	}
 	
-	
-
 </script>
 
 </head>
@@ -217,8 +232,19 @@ function  checkNumber(elm){
 </div></div></div>
 <br>
 </div>
-<!-- mobile submit -->
-<button type="button" id="main-submit-mobile">Search</button>
+
+<%if(error == 1){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> บันทึกข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+<%if(error == -1){ %>
+<div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
+</div>
+<%} %>
 
 
 	<div class="container" style="margin-top: 35px;">
@@ -236,6 +262,9 @@ function  checkNumber(elm){
                           <br>
                            <div  style = "margin-left:300px">
                         <div class="form-group row">
+              
+                                              
+                                                
 									<label class="col-sm-2 col-form-label text-right" > ภาคการศึกษา </label>
 									<div class="col-sm-4">
 										<input type="text" id="Semester" name="Semester"
@@ -352,10 +381,14 @@ function  checkNumber(elm){
 								</th>	
 								<th>
 								<%if (Report != null){%>
-								  <a href="./document/<%=Report.getFilename()%>"><i class="fa fa-file-pdf-o" ></i> รายงานผลการฝึกสหกิจศึกษา</a>
+								  <a href="./document/<%=Report.getFilename()%>" target="_blank"><i class="fa fa-file-pdf-o" ></i> รายงานผลการฝึกสหกิจศึกษา</a>
 								  <h6 style="color:#28A745;"> <i class="fa fa-check"></i> ส่งแล้วเมื่อวันที่   <%=dateFString%> <i class='fa fa-clock-o'></i> เวลา <%=TString%> น.</h6>
 								  <div class="form-group row col-sm-10">
+								  <%if(Evaluatereport.getScore() < 0){ %>
+								 &nbsp; &nbsp; คะแนน : <div class="col-sm-4"><input type="text" id="question_id" name="question_id" onkeyup="checkNumber(this)" value="" class="form-control " maxlength="5"></div> / 10 คะแนน
+								 <%}else{ %>
 								 &nbsp; &nbsp; คะแนน : <div class="col-sm-4"><input type="text" id="question_id" name="question_id" onkeyup="checkNumber(this)" value="<%=Evaluatereport.getScore()%>" class="form-control " maxlength="5"></div> / 10 คะแนน
+								 <%} %>
 								  </div>  
 								  
 								 <%}else{ %>
@@ -372,12 +405,18 @@ function  checkNumber(elm){
 								<th style="white-space:nowrap" >
 								<%if(vdo != null){ %>	
 															
-								  <a href ="${pageContext.request.contextPath}/loadViewVDOPage?STUID=<%=s.getIdstudent()%>"><i class="fa fa-file-video-o" ></i> วิดีโอรายงานผลการฝึกสารสหกิจ </a>		
+								  <a href ="${pageContext.request.contextPath}/loadViewVDOPage?STUID=<%=s.getIdstudent()%>" ><i class="fa fa-file-video-o" ></i> วิดีโอรายงานผลการฝึกสารสหกิจ </a>		
 								   <h6 style="color:#28A745;"> <i class="fa fa-check"></i> ส่งแล้วเมื่อวันที่   <%=dateVDOString%> <i class='fa fa-clock-o'></i> เวลา <%=VDOtring%> น.</h6>						
 								  <div class="form-group row col-sm-10" align = "center">
+								   <%if(Evaluatevideo.getScore() < 0){ %>
 								      &nbsp; &nbsp; คะแนน :  <div class="col-sm-4">
 										<input type="text" name="questionVDO_id" id="questionVDO_id" onkeyup="checkNumber(this)"
-											class="form-control" value="<%=Evaluatevideo.getScore()%>"></div>/10 คะแนน  						
+											class="form-control" value=""></div>/10 คะแนน  
+								    <%}else{ %>
+								    	 &nbsp; &nbsp; คะแนน :  <div class="col-sm-4">
+										<input type="text" name="questionVDO_id" id="questionVDO_id" onkeyup="checkNumber(this)"
+										class="form-control" value="<%=Evaluatevideo.getScore()%>"></div>/10 คะแนน  
+								    <%} %>					
 								 </div>
 								 <%}else{%>
 								 <div style="color:#45505B;"><i class="fa fa-file-video-o" ></i> วิดีโอรายงานผลการฝึกสารสหกิจ </div>		
@@ -406,7 +445,7 @@ function  checkNumber(elm){
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" class="btn btn-success" >
 												บันทึกการให้คะแนน </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										<a href = "${pageContext.request.contextPath}/loadlistcomPage" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 							</form>
@@ -458,7 +497,20 @@ function  checkNumber(elm){
 									
 		<%} %>
 </div>
-	
+
+	<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script>  
+
   <jsp:include page="com/footer.jsp"></jsp:include>
 </body>
 </html>

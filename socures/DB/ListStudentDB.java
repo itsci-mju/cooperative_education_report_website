@@ -422,7 +422,7 @@ public List<Student> AllListStuSemester(String Semester){
 	Connection con = condb.getConnection();
 	try {
 		Statement stmt = con.createStatement();
-		String sql = "SELECT * FROM student where  semester = '"+Semester+"'";
+		String sql = "SELECT * FROM student where  semester like '"+Semester+"%'";
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()) {
 			
@@ -509,15 +509,13 @@ public List<teacher> AllReportTname(String id){
 public double scoreSTU(String idSTU , int idTC){
 	ConnectionDB condb = new ConnectionDB();
 	Connection con = condb.getConnection();
-	double scoreSTU = 0;
+	double scoreSTU = -1;
 	try {
 		Statement stmt = con.createStatement();
 		String sql = "SELECT score from evaluatereport where Report_reportid = "+idSTU+" and Teacher_teacherid = "+idTC+"";
 		ResultSet rs = stmt.executeQuery(sql);
-		while(rs.next()) {
-			
-			scoreSTU = rs.getDouble(1);
-			
+		while(rs.next()) {		
+			scoreSTU = rs.getDouble(1);			
 		}
 		
 		con.close();
@@ -531,7 +529,7 @@ public double scoreSTU(String idSTU , int idTC){
 public double scoreSTUVDO(String idSTU , int idTC){
 	ConnectionDB condb = new ConnectionDB();
 	Connection con = condb.getConnection();
-	double scoreSTUVDO = 0;
+	double scoreSTUVDO = -1;
 	try {
 		Statement stmt = con.createStatement();
 		String sql = "SELECT score from evaluatevideo where Student_studentid = '"+idSTU+"' and Teacher_teacherid = "+idTC+"";

@@ -79,7 +79,7 @@ public class UploadReportDB {
 			ConnectionDB dbcon = new ConnectionDB();
        Connection conn = dbcon.getConnection();   
        Statement statment = conn.createStatement(); 
-       statment.execute("UPDATE report SET sentdate = '"+report.getSentdate()+"' WHERE Student_studentid = '"+report.getStudent_studentid()+"' and ReportName_reportnameid = '"+report.getReportName_reportnameid()+"'"); 
+       statment.execute("UPDATE report SET sentdate = '"+report.getSentdate()+"',filename = '"+report.getFilename()+"' WHERE Student_studentid = '"+report.getStudent_studentid()+"' and ReportName_reportnameid = '"+report.getReportName_reportnameid()+"'"); 
        conn.close();
        return 1; 
        }catch(Exception e){          
@@ -92,7 +92,7 @@ public class UploadReportDB {
 		Connection con = condb.getConnection();
 		try {
 		Statement statment = con.createStatement();
-		statment.execute("insert into evaluatereport values('"+Evaluatereport.getReport_reportid()+"','"+Evaluatereport.getTeacher_teacherid()+"',0,null)");
+		statment.execute("insert into evaluatereport values('"+Evaluatereport.getReport_reportid()+"','"+Evaluatereport.getTeacher_teacherid()+"','-1',null)");
 	
 		con.close();
 		return 1;
@@ -103,6 +103,34 @@ public class UploadReportDB {
 		return -1;
 		}
 		}
+	
+	
+	public report Viewreport(String idR , String stu){
+		report filereport = null ;
+		ConnectionDB condb = new ConnectionDB();
+		Connection con = condb.getConnection();
+		try {
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * FROM report where ReportName_reportnameid = '"+idR+"' and Student_studentid = '"+stu+"'";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			if(rs.next() && rs.getRow()==1 ) {
+				
+				 int reportid = rs.getInt(1);
+				 String filename = rs.getString(2);
+				 String sentdate = rs.getString(3);
+				 String status = rs.getString(4);
+				 String Student_studentid = rs.getString(5);
+				 int ReportName_reportnameid = rs.getInt(6);
+							
+				 filereport = new report (reportid,filename,sentdate,status,Student_studentid,ReportName_reportnameid);
+			}
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return filereport;
+	}
 	
 	}
 

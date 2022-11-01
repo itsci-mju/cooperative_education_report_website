@@ -16,6 +16,15 @@
 	
 %>
 
+<%int error = 0; %>
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
+%>
+
 
 <!DOCTYPE html>
 <html>
@@ -38,8 +47,9 @@
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
 <link rel='stylesheet' href='css/UploadReport.css' type='text/css'/>
+<link rel="stylesheet" href="./css/Alert.css">
 
-
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>
 
 <style type="text/css">
 .file-upload {
@@ -196,6 +206,92 @@ hr.style13 {
     border: 0;
     box-shadow: 0 10px 10px -10px #880000 inset;
 }
+
+
+
+
+
+@font-face {
+  font-family: "ProximaNova-Regular";
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.eot");
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.eot?#iefix") format("embedded-opentype"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.woff") format("woff"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.ttf") format("truetype"), url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/64/ProximaNova-Regular.svg#rocketdesign-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.font-14 {
+  font-size: 14px;
+}
+
+.card {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  transition: .4s background-color;
+}
+.img-container {
+  position: relative;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  overflow: hidden;
+}
+.img-container img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate( -50%, -50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    object-fit: cover;
+    object-position: center;
+}
+.action-button {
+  transition: .3s background-color;
+}
+.action-button:hover {
+  background-color: rgba(101, 119, 134, .1);
+}
+.hover-name:hover {
+  text-decoration: underline;
+}
+.info-card {
+  display: none;
+  min-width: 400px;
+}
+.info-card.show {
+  display: block;
+}
+.pop-up{
+  animation: popUp .3s ease;
+}
+i {
+  transition: .4s color;
+}
+@keyframes popUp {
+  0% {transform: scale(.5);}
+  50% {transform: scale(1.2);}
+  100% {transform: scale(1);}
+}
+
+.rt-active,
+.rt-active:hover {
+  color: #2ecc71;
+}
+
+.ht-active,
+.ht-active:hover {
+  color: #e74c3c;
+}
 </style>
 
 
@@ -210,14 +306,43 @@ hr.style13 {
 					<div class="col-xs-12 col-md-12" style="background-image:url('./images/student.png'); background-position:right; background-repeat:no-repeat">
 
 <h3 style="color:#7EBC1B;" >ระบบประเมินความพึงพอใจที่มีต่อบริษัท</h3>
-<div class="nav1" style="color:#FFFFFF;"><a href="${pageContext.request.contextPath}/loadhome" style="color:#FFFFFF;">หน้าหลัก</a> / <a class="a2" href="#" style="color:#E28A06;">แบบประเมินความพึงพอใจที่มีต่อบริษัท </a></div>
+<div class="nav1" style="color:#FFFFFF;"><a class="a2" href="#" style="color:#E28A06;">แบบประเมินความพึงพอใจที่มีต่อบริษัท </a></div>
 
 </div></div></div>
 <br>
 </div>
 
+<%if(error == 1){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> บันทึกข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+<%if(error == -1){ %>
+<div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> บันทึกข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
+</div>
+<%} %>
 
-<%if(review == null){ %>
+
+<%
+Date dt = new Date(student.getEnddate().getTime());
+Calendar c = Calendar.getInstance();
+c.setTime(dt);
+dt = c.getTime();
+
+Date dd = new Date();
+Calendar c1 = Calendar.getInstance();
+c1.setTime(dd);
+c1.add(Calendar.YEAR,543);
+dd = c1.getTime();
+%>
+
+
+<%
+if(dd.after(dt)){
+if(review == null){ %>
 <form method="POST" enctype="multipart/form-data"action="${pageContext.request.contextPath}/addReviewCompany">
 <section id="content">
 <br><br><br>
@@ -479,7 +604,7 @@ function readURL1(input1) {
 								<div class="form-group row">
 								<label class="col-sm-2 col-form-label text-right">ความพึงพอใจของคุณที่มีต่อบริษัท </label>
 									<div class="col-sm-4">
-										<textarea id="textReview" name="textReview" rows="4" cols="50"></textarea>
+										<textarea id="textReview" name="textReview" rows="4" cols="50" maxlength="200"></textarea>
 									</div>	
 													
 								</div>
@@ -521,9 +646,12 @@ String[] arr = imgStr.split(",");
 							<div class="container">	
 
 <div class="file-upload" id="file-upload1">
-<img src="./images/<%=arr[0]%>" alt="Girl in a jacket" width="230" height="150">
-  <button class="file-upload-btn" id="file-upload-btn1" type="button" onclick="$('#file-upload-input1').trigger( 'click' )">เพิ่มรูปที่ 1</button>
+<button id="f1" type="button" onclick="demoDisplay1()" class="btn btn-danger" style = "margin-left:190px"> <i class="fa-solid fa-xmark"></i> </button>
+<img src="./images/<%=arr[0]%>" id="img1" alt="Girl in a jacket" width="230" height="150">
 
+  <div class="T1" id = "T1" style="display:none">
+  <button class="file-upload-btn" id="file-upload-btn1" type="button" onclick="$('#file-upload-input1').trigger( 'click' )">อัปเดตรูปที่ 1</button>
+  
   <div class="image-upload-wrap" id="image-upload-wrap1">
     <input class="file-upload-input" id="file-upload-input1" name="file-upload-input1" type="file" onchange="readURL1(this);" accept=".png, .jpg, .jpeg" />
     <div class="drag-text" id="drag-text1">
@@ -533,14 +661,19 @@ String[] arr = imgStr.split(",");
   <div class="file-upload-content" id="file-upload-content1">
     <img class="file-upload-image" id="file-upload-image1" src="#" alt="your image" />
     <div class="image-title-wrap" id="image-title-wrap1">
-      <button type="button" onclick="removeUpload1()" class="remove-image" id="remove-image1">Remove <span class="image-title" id="image-title1">Uploaded Image</span></button>
+      <button type="button" onclick="removeUpload1()" class="remove-image" id="remove-image1">Remove </button>
     </div>
+  </div>
   </div>
 </div>
 
 <div class="file-upload" id="file-upload2">
-<img src="./images/<%=arr[1]%>" alt="Girl in a jacket" width="230" height="150">
-  <button class="file-upload-btn" id="file-upload-btn2" type="button" onclick="$('#file-upload-input2').trigger( 'click' )">เพิ่มรูปที่ 2</button>
+<button id="f2" type="button" onclick="demoDisplay2()" class="btn btn-danger" style = "margin-left:190px"> <i class="fa-solid fa-xmark"></i> </button>
+<img src="./images/<%=arr[1]%>" id="img2" alt="Girl in a jacket" width="230" height="150">
+
+
+<div class="T2" id = "T2" style="display:none">
+  <button class="file-upload-btn" id="file-upload-btn2" type="button" onclick="$('#file-upload-input2').trigger( 'click' )">อัปเดตรูปที่ 2</button>
 
   <div class="image-upload-wrap" id="image-upload-wrap2">
     <input class="file-upload-input" id="file-upload-input2" name="file-upload-input2" type="file" onchange="readURL2(this);" accept=".png, .jpg, .jpeg" />
@@ -554,12 +687,15 @@ String[] arr = imgStr.split(",");
       <button type="button" onclick="removeUpload2()" class="remove-image" id="remove-image2">Remove <span class="image-title" id="image-title2">Uploaded Image</span></button>
     </div>
   </div>
+  </div>
 </div>
 
 <div class="file-upload" id="file-upload3">
-<img src="./images/<%=arr[2]%>" alt="Girl in a jacket" width="230" height="150">
-  <button class="file-upload-btn" id="file-upload-btn3" type="button" onclick="$('#file-upload-input3').trigger( 'click' )">เพิ่มรูปที่ 3</button>
+<button id="f3" type="button" onclick="demoDisplay3()" class="btn btn-danger" style = "margin-left:190px"> <i class="fa-solid fa-xmark"></i> </button>
+<img src="./images/<%=arr[2]%>" id="img3" alt="Girl in a jacket" width="230" height="150">
 
+<div class="T3" id = "T3" style="display:none">
+<button class="file-upload-btn" id="file-upload-btn3" type="button" onclick="$('#file-upload-input3').trigger( 'click' )">อัปเดตรูปที่ 3</button>
   <div class="image-upload-wrap" id="image-upload-wrap3">
     <input class="file-upload-input" id="file-upload-input3" name="file-upload-input3" type="file" onchange="readURL3(this);" accept=".png, .jpg, .jpeg" />
     <div class="drag-text" id="drag-text3">
@@ -572,12 +708,17 @@ String[] arr = imgStr.split(",");
       <button type="button" onclick="removeUpload3()" class="remove-image" id="remove-image3">Remove <span class="image-title" id="image-title3">Uploaded Image</span></button>
     </div>
   </div>
+  </div>
 </div>
 
 
 <div class="file-upload" id="file-upload4">
-<img src="./images/<%=arr[3]%>" alt="Girl in a jacket" width="230" height="150">
-  <button class="file-upload-btn" id="file-upload-btn4" type="button" onclick="$('#file-upload-input4').trigger( 'click' )">เพิ่มรูปที่ 4</button>
+<button id="f4" type="button" onclick="demoDisplay4()" class="btn btn-danger" style = "margin-left:190px"> <i class="fa-solid fa-xmark"></i> </button>
+<img src="./images/<%=arr[3]%>" id="img4" alt="Girl in a jacket" width="230" height="150">
+
+
+<div class="T4" id = "T4" style="display:none">
+<button class="file-upload-btn" id="file-upload-btn4" type="button" onclick="$('#file-upload-input4').trigger( 'click' )">อัปเดตรูปที่ 4</button>
 
   <div class="image-upload-wrap" id="image-upload-wrap4">
     <input class="file-upload-input" id="file-upload-input4" name="file-upload-input4" type="file" onchange="readURL4(this);" accept=".png, .jpg, .jpeg" />
@@ -591,6 +732,7 @@ String[] arr = imgStr.split(",");
       <button type="button" onclick="removeUpload4()" class="remove-image" id="remove-image4">Remove <span class="image-title" id="image-title4">Uploaded Image</span></button>
     </div>
   </div>
+  </div>
 </div>
 
 </div>
@@ -602,11 +744,58 @@ String[] arr = imgStr.split(",");
 
 <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>	
 <script>
-function readURL1(input1) {
+
+function demoDisplay1() {
+	document.getElementById('T1').style.display = 'block';
+	document.getElementById('f1').style.display = 'none';
+	document.getElementById('img1').style.display = 'none';	
+	}
+
+function DdemoDisplay1() {
+	document.getElementById('T1').style.display = 'none';
+	document.getElementById('f1').style.display = 'block';
+	document.getElementById('img1').style.display = 'block';	
+	removeUpload1()
+	}
+	
+function demoDisplay2() {
+	document.getElementById('T2').style.display = 'block';
+	document.getElementById('f2').style.display = 'none';
+	document.getElementById('img2').style.display = 'none';	
+	}
+function DdemoDisplay2() {
+	document.getElementById('T2').style.display = 'none';
+	document.getElementById('f2').style.display = 'block';
+	document.getElementById('img2').style.display = 'block';
+	removeUpload2();
+	}
+	
+function demoDisplay3() {
+	document.getElementById('T3').style.display = 'block';
+	document.getElementById('f3').style.display = 'none';
+	document.getElementById('img3').style.display = 'none';	
+	}
+function DdemoDisplay3() {
+	document.getElementById('T3').style.display = 'none';
+	document.getElementById('f3').style.display = 'block';
+	document.getElementById('img3').style.display = 'block';	
+	removeUpload3();
+	}
+	
+function demoDisplay4() {
+	document.getElementById('T4').style.display = 'block';
+	document.getElementById('f4').style.display = 'none';
+	document.getElementById('img4').style.display = 'none';	
+	}
+function DdemoDisplay4() {
+	document.getElementById('T4').style.display = 'none';
+	document.getElementById('f4').style.display = 'block';
+	document.getElementById('img4').style.display = 'block';	
+	removeUpload4();
+	}
+function readURL1(input1) {	
 	  if (input1.files && input1.files[0]) {
-
-	    var reader1 = new FileReader();
-
+	    var reader1 = new FileReader();	   	    
 	    reader1.onload = function(e) {
 	      $('#image-upload-wrap1').hide();
 
@@ -624,6 +813,7 @@ function readURL1(input1) {
 	}
 
 	function removeUpload1() {
+		document.getElementById('file-upload-input1').value ="";
 	  $('#file-upload-input1').replaceWith($('#file-upload-input1').clone());
 	  $('#file-upload-content1').hide();
 	  $('#image-upload-wrap1').show();
@@ -657,6 +847,7 @@ function readURL1(input1) {
 	}
 
 	function removeUpload2() {
+		document.getElementById('file-upload-input2').value ="";
 	  $('#file-upload-input2').replaceWith($('#file-upload-input2').clone());
 	  $('#file-upload-content2').hide();
 	  $('#image-upload-wrap2').show();
@@ -691,6 +882,7 @@ function readURL1(input1) {
 	}
 
 	function removeUpload3() {
+		document.getElementById('file-upload-input3').value ="";
 	  $('#file-upload-input3').replaceWith($('#file-upload-input3').clone());
 	  $('#file-upload-content3').hide();
 	  $('#image-upload-wrap3').show();
@@ -725,6 +917,7 @@ function readURL1(input1) {
 	}
 
 	function removeUpload4() {
+		document.getElementById('file-upload-input4').value ="";
 	  $('#file-upload-input4').replaceWith($('#file-upload-input4').clone());
 	  $('#file-upload-content4').hide();
 	  $('#image-upload-wrap4').show();
@@ -814,7 +1007,7 @@ function readURL1(input1) {
 								<div class="form-group row">
 								<label class="col-sm-2 col-form-label text-right">ความพึงพอใจของคุณที่มีต่อบริษัท </label>
 									<div class="col-sm-4">
-										<textarea id="textReview" name="textReview" rows="4" cols="50"><%=review.getReviewdetails() %></textarea>
+										<textarea id="textReview" name="textReview" rows="4" cols="50" maxlength="200"><%=review.getReviewdetails() %></textarea>
 									</div>	
 													
 								</div>
@@ -824,7 +1017,8 @@ function readURL1(input1) {
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" class="btn btn-success">
 												บันทึกการรีวิว </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										<a href = "${pageContext.request.contextPath}/loadReviewCompanyPage" class="btn btn-warning" >ยกเลิก </a>
+										
 									</div>
 								</div>
 </div>
@@ -835,7 +1029,115 @@ function readURL1(input1) {
 </form>
 
 <%}%>
+<%}else{%>
+<br><br>
+<div class="container" style="margin-top: 35px;">
+
+			<section id="content">
+				<div class="container" style="margin-top: -20px">
+					<div class="row">
+			
+			<div class="container position-relative">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <div class="media">
+        <div class="navbar-brand">
+        </div>
+        <div class="media-body">	
+           <h4 style="color:#FD4648;"><i class="fa-solid fa-circle-exclamation"></i> ระบบจะเปิดให้รีวิวบริษัทหลังการฝึกสหกิจเสร็จสิ้น </h4>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        </div>
+
+<br><br>
+<br><br>
+<br><br>
+<%} %>
 <br>
+
+<script type="text/javascript">
+$(".action-button > i").bind("webkitAnimationEnd mozAnimationEnd animationEnd", function(){
+	  $(this).removeClass("pop-up")  
+	});
+
+	$(".action-button").mouseenter(function(){
+	  $(this).find('i').addClass("pop-up");        
+	});
+
+	//Toggle card shadow
+	$('.card').hover(function (){
+	  $(this).toggleClass('shadow');
+	});
+
+	//Hover card animation
+	$('.hover-name').hover(function() {
+	  $(this).find('.info-card').addClass('show');
+	}, function() {
+	  $('.info-card').removeClass('show');
+	})
+
+	//Follow button functions
+	$('.follow, .unfollow').on('click', function(e){
+	  e.preventDefault();
+	  var el = $(this);
+
+	  var loader = $('<i>', {
+	    class: 'fas fa-spinner fa-spin'
+	  });
+	  
+	  el.html(loader);
+	  
+	  var btnClass, btnText;
+	  if(el.hasClass('unfollow')) {
+	    btnClass = 'follow btn btn-outline-primary font-weight-bold';
+	    btnText = 'Follow'
+	  } else {
+	    btnClass = 'unfollow btn btn-outline-danger font-weight-bold';
+	    btnText = 'Unfollow'
+	  }
+	  
+	  setTimeout(function(){
+	    el
+	    .html(btnText)
+	    .attr('class', btnClass);
+	  }, 1000);
+	});
+
+	// Button Animation
+	$('.action-button').on('click', function(){
+	  var el = $(this);
+	  el.find('i').toggleClass('pop-up');
+	  
+	  if(el.hasClass('retweet')) {
+	    el.toggleClass('rt-active');
+	  }
+	  
+	  if(el.hasClass('heart')) {
+	    el.toggleClass('ht-active');
+	    el.find('i').toggleClass('far fas');
+	  }
+	});
+</script>
+
+
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script>  
 	<jsp:include page="com/footer.jsp"></jsp:include>
 </body>
 </html>

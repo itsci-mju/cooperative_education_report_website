@@ -12,18 +12,20 @@ public class VDO {
 	private String filename;
 	private String sentdate;
 	private String status;
+	private String semester;	
 	private int Company_companyid;
 
 	public VDO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VDO(int videoid, String filename, String sentdate, String status, int company_companyid) {
+	public VDO(int videoid, String filename, String sentdate, String status, String semester, int company_companyid) {
 		super();
 		this.videoid = videoid;
 		this.filename = filename;
 		this.sentdate = sentdate;
 		this.status = status;
+		this.semester = semester;
 		Company_companyid = company_companyid;
 	}
 
@@ -41,6 +43,10 @@ public class VDO {
 
 	public String getStatus() {
 		return status;
+	}
+
+	public String getSemester() {
+		return semester;
 	}
 
 	public int getCompany_companyid() {
@@ -63,11 +69,14 @@ public class VDO {
 		this.status = status;
 	}
 
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+
 	public void setCompany_companyid(int company_companyid) {
 		Company_companyid = company_companyid;
 	}
 
-	
 	
 	
 }

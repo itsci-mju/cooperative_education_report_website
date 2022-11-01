@@ -5,16 +5,19 @@
 
 <%  List<Student> student = (List)session.getAttribute("student"); 
 String getSemester = (String)session.getAttribute("getSemester");
-
-
 %>
 
 <%
 	ListStudentDB ListStu = new ListStudentDB();
+%>
 
-
-
-
+<%int error = 0; %>
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
 %>
 
 <!DOCTYPE html>
@@ -47,6 +50,7 @@ hr.style13 {
 <link href='https://fonts.googleapis.com/css?family=Kanit'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
+<link rel="stylesheet" href="./css/Alert.css">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -202,8 +206,19 @@ hr.style13 {
 </div></div></div>
 <br>
 </div>
-<button type="button" id="main-submit-mobile">Search</button>
 
+<%if(error == 1){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> ลบข้อมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+<%if(error == -1){ %>
+<div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-xmark"></i> ลบข้อมูลไม่สำเร็จ : </strong> กรุณากรอกข้อมูลใหม่  
+</div>
+<%} %>
 
 	<div class="container" style="margin-top: 35px;">
 		<br> <br>
@@ -239,12 +254,15 @@ hr.style13 {
 							<label class="col-sm-2 col-form-label text-right"> ภาคการศึกษา </label>
                            <% List<String> semester =  ListStu.AllListsemester(); %>
                                         <select name="searchDate" id="searchDate" >                                                                                    
-                                             <%for(int i = 0; i<semester.size(); i++){ %>   
+                                             <%for(int i = 0; i<semester.size(); i++){ %>  
+                                                 
+                                               
                                                  <%if(semester.get(i).equals(getSemester)){ %>
                                                  <option selected value="<%=semester.get(i)%>"><%=semester.get(i)%></option>         
                                                  <%}else{ %> 
                                                  <option value="<%=semester.get(i)%>"><%=semester.get(i)%></option>  
-                                                 <%} %>  
+                                                 <%} %> 
+                                                
                                              <%} %>
                                        
                                         </select>
@@ -264,11 +282,13 @@ hr.style13 {
 	</div>
 	<div class="container" style="margin-top: 35px;">
                 <div align = "right">
-				<a href = "${pageContext.request.contextPath}/loadAddStudentPage" class="btn btn-primary" ><i class="fa fa-fw -square -circle fa-plus-square" ></i> เพิ่มข้อมูลนักศึกษา </a>
-				
+				<a href = "${pageContext.request.contextPath}/ExportStudentPage" class="btn btn-primary" ><i class="fa-solid fa-file-export"></i> เอ็นพอยท์ข้อมูลนักศึกษา  </a>
 				</div>
    <table class="table table-bordered" id="myTable">
                     <thead class="table-info">
+                    <tr align = "center">
+                     <th colspan="6"> <%=getSemester%> </th>
+                    </tr>
                         <tr align = "center">
                             <th>รหัสนักศึกษา</th>
                             <th>ชื่อนักศึกษา</th>
@@ -286,7 +306,7 @@ hr.style13 {
                   <th><%=S.getStudentname()%> <%=S.getStudentlastname()%></th>
                   <th><%=S.getWorkposition()%></th>
                   
-                  <% Date dt = new Date(S.getStartdate().getTime());
+                                    <% Date dt = new Date(S.getStartdate().getTime());
 								Calendar c = Calendar.getInstance(); 
 								c.setTime(dt); 
 								dt = c.getTime();
@@ -317,7 +337,55 @@ hr.style13 {
 			  			      
 	</div>
 
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
 
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script>
+
+<script type="text/javascript">
+$(document).ready(
+        function() {
+            $('#myTable').after(
+                    '<div id="nav" class="pagination" ></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#myTable tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav')
+                        .append(
+                                '<a href="#" rel="'+i+'" >' + pageNum
+                                        + '</a> ');
+            }
+            $('#myTable tbody tr').hide();
+            $('#myTable tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind(
+                    'click',
+                    function() {
+
+                        $('#nav a').removeClass('active');
+                        $(this).addClass('active');
+                        var currPage = $(this).attr('rel');
+                        var startItem = currPage * rowsShown;
+                        var endItem = startItem + rowsShown;
+                        $('#myTable tbody tr').css('opacity', '0.0')
+                                .hide().slice(startItem, endItem).css(
+                                        'display', 'table-row')
+                                .animate({
+                                    opacity : 1
+                                }, 300);
+                    });
+        });
+</script>  
 	             <jsp:include page="com/footer.jsp"></jsp:include>
 	  
 </body>

@@ -26,7 +26,7 @@ public class ListmentorDB {
 		Connection con = condb.getConnection();
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "select * from mentor where Student_studentid = '"+id+"'";
+			String sql = "select mentorid,mentorname,mentorlastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg FROM mentor INNER JOIN mentor_student ON mentor_student.mentor_mentorid = mentor.mentorid where mentor_student.student_studentid = '"+id+"';";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				
@@ -40,10 +40,9 @@ public class ListmentorDB {
 				String mentorfacebook = rs.getString(8);
 				String phonenumber = rs.getString(9);
 				String mentorimg = rs.getString(10);	
-				String Student_studentid = rs.getString(11);
 				
 				
-				Mentor mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg,Student_studentid);
+				Mentor mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg);
 				listMentor.add(mentor);
 			}
 			con.close();
@@ -59,7 +58,7 @@ public class ListmentorDB {
 		Connection con = condb.getConnection();
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "delete from mentor where  mentorid = '"+id+"'";
+			String sql = "delete from mentor_student where  mentor_mentorid = '"+id+"'";
 			int result = stmt.executeUpdate(sql);
 			con.close();
 			return result;

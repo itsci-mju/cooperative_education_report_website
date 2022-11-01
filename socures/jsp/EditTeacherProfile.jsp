@@ -6,7 +6,6 @@
  
 <%teacher Teacher = (teacher)session.getAttribute("teacher");%>
 <%int error = 0; %>
-
 <%
 try{
 	error = (int)request.getAttribute("error");
@@ -49,6 +48,7 @@ hr.style13 {
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="https://kit.fontawesome.com/e18a64822c.js"></script>
+
 
 <style type="text/css">
 
@@ -126,10 +126,10 @@ hr.style13 {
 
 function validateForm(frm){
 	
-	var patt = /^[0]{1}[8|9|6]{1}[0-9]{8,}/;
+	var patt = /^[0]{1}[8|9|6|5]{1}[0-9]{7,}/;
 	var regexp =/^[ก-์|.]{2,45}$/;
 	var regex_email = /^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*\@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.([a-zA-Z]){2,4})$/;
-	var regexpPW =/^[A-Za-z|0-9]{10,}$/;
+	var regexpPW =/^[A-Za-z|0-9]{9,}$/;
 
 	
 	if(frm.teachername.value == ""){
@@ -138,7 +138,7 @@ function validateForm(frm){
 		}
 	
 	if (regexp.test(frm.teachername.value)==false){
-		alert("กรุณากรอกชื่อเป็นภาษาไทย  ความยาว 2-50 ตัวอักษร");
+		alert("กรุณากรอกชื่อเป็นภาษาไทย  ความยาว 2-45 ตัวอักษร");
 		frm.teachername.value ="";
 		return false;
 		}
@@ -150,7 +150,7 @@ function validateForm(frm){
 		}
 	
 	if (regexp.test(frm.teacherlastname.value)==false){
-		alert("กรุณากรอกนามสกุลเป็นภาษาไทย  ความยาว 2-50 ตัวอักษร");
+		alert("กรุณากรอกนามสกุลเป็นภาษาไทย  ความยาว 2-45 ตัวอักษร");
 		frm.teacherlastname.value ="";
 		return false;
 		}
@@ -273,8 +273,9 @@ function validateForm(frm){
 								 <div class="form-group row">
 									<label class="col-sm-2 col-form-label text-right"> รหัสผ่าน </label>
 									<div class="col-sm-4">
-										<input type="password" id="password" name="password"
+										<input type="text" id="password" name="password"
 											class="form-control data" value="<%=Teacher.getPassword()%>" maxlength="10">
+										
 									</div>		
 													
 								</div>
@@ -316,7 +317,7 @@ for (i = 0; i < close.length; i++) {
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
 												บันทึกการแก้ไข </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										<a href = "${pageContext.request.contextPath}/loadViewTeacherProfile" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 								</form>	 

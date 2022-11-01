@@ -11,6 +11,7 @@
 %>
 <%
 	String Reportid = (String) session.getAttribute("Reportid");
+    report FRP = (report) session.getAttribute("FRP");
 %>
 
 <!DOCTYPE html>
@@ -110,6 +111,16 @@
 
 </style>
 
+<script type="text/javascript">
+
+function validateForm(frm){
+	if(frm.img_logo.value == ""){
+		alert("กรุณาส่งไฟล์นามสกุลไฟล์  PDF");
+		return false;
+		}
+}
+</script>
+
 </head>
 <body>
 <jsp:include page="com/navbar.jsp"></jsp:include>
@@ -128,7 +139,7 @@
 </div>
 
 	<div class="container" style="margin-top: 35px;">
-	<form method="POST" enctype="multipart/form-data"action="${pageContext.request.contextPath}/uploadReport">
+	<form name="frm" method="POST" enctype="multipart/form-data"action="${pageContext.request.contextPath}/EditReport">
 	    <section id="content">
 				<div class="container" style="margin-top: -20px">
 					<div class="row">
@@ -136,17 +147,23 @@
 							<div class="container">
 							<br><br>
 							                             
-                              	<div class="form-group row">
-									<label class="col-sm-2 col-form-label text-right">ชื่อเอกสาร :</label>
+                         <div class="form-group row" style = "margin-left:200px">
+									<label class="col-sm-2 col-form-label text-right">ชื่อเอกสาร </label>
 									<div class="col-sm-4">
 										<input type="text" id="Reportname" name="Reportname"
 											class="form-control data" value="<%=Reportname%>"  readonly>
 									</div>	
-													
+									
+										
 								</div>
+									<div class="form-group row" style = "margin-left:370px">
+											 <a href="./document/<%=FRP.getFilename()%>" target="_blank" ><h5><i class="fa fa-file-pdf-o" ></i> เปิดไฟล์เอกสาร </h5></a> 
+									</div>	
+								
 							
 								<div class="form-group" align = "center" >
-								   <div class="col-sm-6">
+								
+								   <div class="col-sm-6">								   	 
 												<div class="preview-zone hidden" >
 													<div class="box box-solid">
 														<div class="box-header with-border">
@@ -156,7 +173,6 @@
 														</div>
 														<div class="box-body"></div>
 													</div>
-													<br>
 												</div>
 												
 												<div class="dropzone-wrapper">
@@ -232,9 +248,9 @@
 								<br><br>
 									<div class="form-group row">
 									<div class="col-sm-12 text-center">
-										<a href="#"><button type="submit" class="btn btn-success">
+										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
 												อัปโหลดเอกสาร </button></a>
-									<button type="reset" class="btn btn-warning">ยกเลิก</button>
+									<a href = "${pageContext.request.contextPath}/loadnotifyPage" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 							</div>

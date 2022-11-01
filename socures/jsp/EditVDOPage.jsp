@@ -7,7 +7,7 @@
 <%String Reportname = (String)session.getAttribute("Reportname");%>
 <%String Reportid = (String)session.getAttribute("Reportid");%>
 <%List<Student> Lstd = (List)session.getAttribute("Lstd"); %>
-
+<%VDO Fvdo = (VDO)session.getAttribute("Fvdo"); %>
 	
 <!DOCTYPE html>
 <html>
@@ -87,7 +87,12 @@ function validateForm(frm){
 
   
   <form  method="POST" id="frm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/EditVDO" >
-   
+    
+    <div class="form-group" align = "center">
+     <% String[] arr = Fvdo.getFilename().split("https://youtu.be/"); %>
+     <iframe width="350" height="300" src="https://www.youtube.com/embed/<%=arr[1]%>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    
     <div class="form-group">
       <h3>ขั้นตอนที่ 1 </h3>
       <h5>ให้นักศึกษาทำการอัพวิดีโอลง youtube  <a href="https://support.google.com/youtube/answer/57407?hl=th&co=GENIE.Platform%3DDesktop"> <i class="fa-solid fa-circle-info"></i> อ่านเพิ่มเติม </a> </h5>

@@ -42,8 +42,10 @@ public class ViewSummaryReportcontroller {
 		List<Student> StuSemester = ListStu.AllListStuSemester(semesterList.get(0));
 		List<teacher> teacherList =  ListTM.SearchteacherALL();
 		
+		
 		session.setAttribute("StuSemester", StuSemester);
 		session.setAttribute("teacherList", teacherList);
+		session.setAttribute("getSemester", semesterList.get(0));
 		
 		return "ViewSummaryReport";
 	}
@@ -77,15 +79,16 @@ public class ViewSummaryReportcontroller {
 		
 		ListStudentDB ListStu = new ListStudentDB();
 		teacherManager ListTM = new teacherManager();
+		String searchDate = request.getParameter("getsemester");
 		
 		
 		List<String> semesterList =  ListStu.AllListsemester();
-		List<Student> StuSemester = ListStu.AllListStuSemester(semesterList.get(0));
+		List<Student> StuSemester = ListStu.AllListStuSemester(searchDate);
 		List<teacher> teacherList =  ListTM.SearchteacherALL();
 		
 		session.setAttribute("StuSemester", StuSemester);
 		session.setAttribute("teacherList", teacherList);
-		session.setAttribute("getSemester", semesterList.get(0));
+		session.setAttribute("getSemester", searchDate);
 		
 		return "ExportSummaryReport";
 	}

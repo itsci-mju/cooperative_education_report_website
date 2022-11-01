@@ -56,17 +56,17 @@ hr.style13 {
 function validateForm(frm){
 	
 	var patt = /^[0]{1}[8|9|6]{1}[0-9]{8,}/;
-	var regexp =/^[ก-์|.| ]{2,45}$/;
+	var regexp =/^[ก-์|.| ]{2,35}$/;
 	var regexpPW =/^[A-Za-z|0-9]{10,}$/;
 	
 	if (regexp.test(frm.studentname.value)==false){
-		alert("กรุณากรอกชื่อเป็นภาษาไทย  ความยาว 2-50 ตัวอักษร");
+		alert("กรุณากรอกชื่อเป็นภาษาไทย  ความยาว 2-35 ตัวอักษร");
 		frm.studentname.value ="";
 		return false;
 		}
 	
 	if (regexp.test(frm.studentlastname.value)==false){
-		alert("กรุณากรอกนามสกุลเป็นภาษาไทย  ความยาว 2-50 ตัวอักษร");
+		alert("กรุณากรอกนามสกุลเป็นภาษาไทย  ความยาว 2-35 ตัวอักษร");
 		frm.studentlastname.value ="";
 		return false;
 		}
@@ -145,7 +145,7 @@ function validateForm(frm){
                                 <div class="form-group row">
 									<label class="col-sm-2 col-form-label text-right">รหัสผ่าน</label>
 									<div class="col-sm-4">
-										<input type="password" id="password" name="password"
+										<input type="text" id="password" name="password"
 											class="form-control data" placeholder="รหัสผ่าน" value="<%=student.getPassword()%>" >
 									</div>						
 								</div>
@@ -164,7 +164,7 @@ function validateForm(frm){
 									</div>						
 								</div>
 							
-							<%String[] cars = {"Mobile Developer", "Web Developer", "Tester"}; %>
+							<%String[] cars = {"Mobile Developer", "Web Developer", "Tester" , "Backend Developer"}; %>
 							
                                <div class="form-group row">
 									<label class="col-sm-2 col-form-label text-right">ตำแหน่งงาน</label>
@@ -208,60 +208,14 @@ function validateForm(frm){
 											class="form-control data" value="<%=date2%>" readonly>
 									</div>					
 								</div>
-								<br>							 								
-								<hr class="style13">
-					          <h5 style="color:#850000">ข้อมูลพนักงานพี่เลี้ยง</h5>
-                 <br> 
-                      
-				<div id="tableSericeRequestForm">
-				<div align = "right">
-				<a href = "${pageContext.request.contextPath}/loadaddmentorPage" class="btn btn-primary" ><i class="fa fa-fw -square -circle fa-plus-square" ></i> เพิ่มข้อมูลพี่เลี้ยง </a>
-				</div>
-				<br>
-                <table class="table table-bordered" id="myTable">
-                    <thead class="table-info">
-                        <tr>
-                            <th>ชื่อพนักงานพี่เลี้ยง</th>
-                            <th>นามสกุลพนักงานพี่เลี้ยง</th>
-                            <th>ชื่อเล่นพนักงานพี่เลี้ยง</th>
-                            <th>อีเมล</th>
-                            <th>เบอร์โทรศัพท์</th>
-                           <th></th>
-                        </tr> 
-                    </thead>   
-                    <tbody>
-                    <%ListmentorDB   HM = new ListmentorDB();
-            		List<Mentor> st = HM.AllListmentor(student.getIdstudent()); %>
-            		<%if(st.size() != 0){ %>
-                    <%for(Mentor MM : st){ %>
-                        <tr>
-                            <th><%=MM.getMentorname()%></th>
-                            <th><%=MM.getMentorlastname()%></th>
-                            <th><%=MM.getMentornickname()%></th>
-                            <th><%=MM.getMetoremail()%></th>
-                            <th><%=MM.getPhonenumber()%></th>    
-                            <th>
-                            <a href ="${pageContext.request.contextPath}/loadEditmentorPage?idMentor=<%=MM.getMentorid()%>"><i class="fa fa-pencil-square-o" style="font-size:30px"></i></a>
-                            <a href = "${pageContext.request.contextPath}/loaddeletmentor?idMentor=<%=MM.getMentorid()%>"><i class="material-icons" style="font-size:28px">delete</i></a>
-                            </th>
-                        </tr>                    
-                    <%} %>
-                      <%}else{ %>
-                 <tr>
-                    	 <td colspan = "6" align="center"><h5 style="color:#850000"> <i class="fa fa-ban"></i> ไม่มีข้อมูลพนักงานพี่เลี้ยง </h5></td>
-                </tr>
-                    <%} %>
-                    </tbody>    
-                              
-                </table>
-				</div>	
-				<br><br>
+								<br><br><br>						 								
+							
 			
 					<div class="form-group row">
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
-												บันทึกการแก้ไข </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+												บันทึกการแก้ไข </button></a>							
+										<a href = "${pageContext.request.contextPath}/loadViewStudentProfile" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 								</form>	 

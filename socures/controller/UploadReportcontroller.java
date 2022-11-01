@@ -43,12 +43,17 @@ public class UploadReportcontroller {
 
 	@RequestMapping(value = "/loadEditReportPage" , method = RequestMethod.GET)
 	public String loadEditReportPage(HttpServletRequest  request ,HttpSession session) {
+		UploadReportDB UR = new UploadReportDB();
 		
+		Student student = (Student)session.getAttribute("student");
 		String Reportname = request.getParameter("getReportname");
 		String Reportid = request.getParameter("Reportid");
 		
+		report RP = UR.Viewreport(Reportid,student.getIdstudent() );
+		
 		session.setAttribute("Reportname", Reportname);
 		session.setAttribute("Reportid", Reportid);
+		session.setAttribute("FRP", RP);
 		return "EditReportPage";
 	}
 
@@ -59,7 +64,7 @@ public class UploadReportcontroller {
 	Student student = (Student)session.getAttribute("student");
 	String Reportid = (String)session.getAttribute("Reportid");
 	
-	
+	int error = 0;
 	
 	 int Reportidint = Integer.parseInt(Reportid);
 	
@@ -83,14 +88,14 @@ public class UploadReportcontroller {
 			String date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").format(dd);
 			report report = new report(getMaxreport+1,Reportid+"_"+student.getIdstudent()+"_"+date2+".pdf",date1,"ยังไม่ได้ให้คะแนนเอกสาร",student.getIdstudent(),Reportidint);
 			
-			int error = UR.addreport(report);	
+			 error = UR.addreport(report);	
 			
 			
 			if(Reportidint == 17) {
 				for(teacher TH : Teacher) {
 					if(TH.getStatus().equals("อยู่")) {
 					evaluatereport evvreport = new evaluatereport(getMaxreport+1,TH.getTeacherid(),0,null);		
-					int error2 = UR.addevaluatereport(evvreport);	
+					 error = UR.addevaluatereport(evvreport);	
 					}
 				}
 				}
@@ -100,9 +105,11 @@ public class UploadReportcontroller {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
+			error = -1;
 			
 			}
 	}
+	request.setAttribute("error", error);
 	return "notifysendingreportPage";
 	}
 	
@@ -112,14 +119,14 @@ public class UploadReportcontroller {
 
 	Student student = (Student)session.getAttribute("student");
 	String Reportid = (String)session.getAttribute("Reportid");
-	
+	int error = 0;
 	 int Reportidint = Integer.parseInt(Reportid);
 	
 	if (ServletFileUpload.isMultipartContent(request)) {
 		try {
 			List<FileItem> data = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(request);
 			
-			String profile_pic = new File(data.get(0).getName()).getName();
+			String profile_pic = new File(data.get(1).getName()).getName();
 			
 			UploadReportDB UR = new UploadReportDB();
 			int getMaxreport = UR.getMaxreport();
@@ -134,16 +141,18 @@ public class UploadReportcontroller {
 			
 			report report = new report(getMaxreport+1,Reportid+"_"+student.getIdstudent()+"_"+date2+".pdf",date1,"ยังไม่ได้ให้คะแนนเอกสาร",student.getIdstudent(),Reportidint);
 			
-			int error = UR.addreport(report);	
+			 error = UR.UPDATEreport(report);	
 			String path = request.getSession().getServletContext().getRealPath("/") + "//document//";
 			System.out.println(path);
-			data.get(0).write(new File(path +File.separator +Reportid+"_"+student.getIdstudent()+"_"+date2+".pdf"));
+			data.get(1).write(new File(path +File.separator +Reportid+"_"+student.getIdstudent()+"_"+date2+".pdf"));
 			
 		}catch (Exception e) {
 			e.printStackTrace();
+			error = -1;
 			
 			}
 	}
+	request.setAttribute("error", error);
 	return "notifysendingreportPage";
 	}
 

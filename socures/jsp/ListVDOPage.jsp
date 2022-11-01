@@ -6,6 +6,10 @@
 
 <%
 ViewVDODB vdo = new ViewVDODB(); 
+ListCompanyDB com = new ListCompanyDB();
+ListStudentDB ListStu = new ListStudentDB();
+String Semester = (String)session.getAttribute("semester");
+List<VDO> Listvdo = (List)session.getAttribute("Listvdo");
 %>
 
 
@@ -68,19 +72,67 @@ ViewVDODB vdo = new ViewVDODB();
 <div class="main">
   <h2 class="text-header text-center"> วีดีโอผลการปฏิบัติงานสหกิจศึกษา  </h2>
 			<hr class="colorgraph">
+<br><br>
+
+<form name="frm" method="post" action="${pageContext.request.contextPath}/loadViewVDOALLsemesterPage" >
+<div class="form-group row">
+<div class="col-sm-12" align = "center">
+<label class="col-sm-2 col-form-label text-right"> ภาคการศึกษา </label>		
+<select name="searchDate" id="searchDate" >
+      <% List<String> semester =  ListStu.AllListsemester(); %>
+      <%if(Semester.equals("1")){ %>  
+       <option selected value="1">แสดงทั้งหมด</option>  
+       <%}else{ %>
+       <option value="1">แสดงทั้งหมด</option>   
+       <%} %>  
+                                                                                
+      <%for(int i = 0; i<semester.size(); i++){ %>                                               
+                                             
+   
+<%if(semester.get(i).equals(Semester)){ %>
+<option selected value="<%=semester.get(i)%>"><%=semester.get(i)%></option>         
+<%}else{ %> 
+<option value="<%=semester.get(i)%>"><%=semester.get(i)%></option>  
+  <%} %> 
+    <%} %> 
+                                  
+   </select>&nbsp;   <a href="#"><button type="submit" class="btn btn-success">
+												<i class="fa-sharp fa-solid fa-magnifying-glass"></i> </button></a>	
+   </div>   
+     </div> 
+ </form>
+   		
+<br><br>			
   <ul class="cards">
-  
-  <%List<VDO> Listvdo = vdo.AllListStuvdoDESC1(); %>
-  <%for(int i= 0; i<Listvdo.size() ; i++){ %>
+
+<%for(int i= 0; i<Listvdo.size() ; i++){ %>
     <li class="cards_item">
-      <div class="card">
+	  <% String[] arr = Listvdo.get(i).getFilename().split("https://youtu.be/"); %>
+	 <div class="card_image">  
+	  <div class="container position-relative">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="hover-name col-auto pr-0">
+              <div class="text-dark position-relative">
+              <%Company c = com.Searchcompanyid(Listvdo.get(i).getCompany_companyid()); %>
+                <h5>บริษัท <%=c.getCompanyname() %></h5>         
+              </div>
+            </div>
+            <div class="col-auto pr-0">        
+              <span class="text-muted"><i class="fa-sharp fa-solid fa-earth-americas"></i> <%=Listvdo.get(i).getSemester() %> </span>                      
+            </div>
+          </div>
+           <iframe width="350" height="300" src="https://www.youtube.com/embed/<%=arr[1]%>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          </div>
+          </div>
+          </div>
+         </div> 
+	  
       
-      <% String[] arr = Listvdo.get(i).getFilename().split("src="); %>
-	  <% String[] arr1 = arr[1].split("title="); %>
-        <div class="card_image">
-       <iframe width="350" height="300" src=<%=arr1[0]%> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-       
       </div>
     </li>
 <%}%>

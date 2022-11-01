@@ -110,6 +110,16 @@
 
 </style>
 
+<script type="text/javascript">
+
+function validateForm(frm){
+	if(frm.img_logo.value == ""){
+		alert("กรุณาส่งไฟล์นามสกุลไฟล์  PDF");
+		return false;
+		}
+}
+</script>
+
 </head>
 <body>
 <jsp:include page="com/navbar.jsp"></jsp:include>
@@ -128,7 +138,7 @@
 </div>
 
 	<div class="container" style="margin-top: 35px;">
-	<form method="POST" enctype="multipart/form-data"action="${pageContext.request.contextPath}/uploadReport">
+	<form name="frm" method="POST" enctype="multipart/form-data"action="${pageContext.request.contextPath}/uploadReport">
 	    <section id="content">
 				<div class="container" style="margin-top: -20px">
 					<div class="row">
@@ -225,16 +235,40 @@
 			reset(dropzone);
 		});
 	</script>
-									
+		
+		<script>
+		$(document).ready(function(){
+		    $('.customer-logos').slick({
+		        slidesToShow: 6,
+		        slidesToScroll: 1,
+		        autoplay: true,
+		        autoplaySpeed: 1500,
+		        arrows: false,
+		        dots: false,
+		        pauseOnHover: false,
+		        responsive: [{
+		            breakpoint: 768,
+		            settings: {
+		                slidesToShow: 4
+		            }
+		        }, {
+		            breakpoint: 520,
+		            settings: {
+		                slidesToShow: 3
+		            }
+		        }]
+		    });
+		});
+		</script>
 																																								
 																										
 								
 								<br><br>
 									<div class="form-group row">
 									<div class="col-sm-12 text-center">
-										<button type="submit" class="btn btn-success">
+										<button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success">
 												อัปโหลดเอกสาร </button>
-									     <button type="reset" class="btn btn-warning">ยกเลิก</button>
+									     <a href = "${pageContext.request.contextPath}/loadnotifyPage" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 							</div>

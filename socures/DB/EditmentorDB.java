@@ -42,10 +42,9 @@ public Mentor SearchMentorid (int id){
 				String mentorfacebook = rs.getString(8);
 				String phonenumber = rs.getString(9);
 				String mentorimg = rs.getString(10);	
-				String Student_studentid = rs.getString(11);
 				
 				
-				mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg,Student_studentid);
+				mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg);
 		
 			}
 			con.close();
@@ -61,7 +60,19 @@ public Mentor SearchMentorid (int id){
 			ConnectionDB dbcon = new ConnectionDB();
        Connection conn = dbcon.getConnection();   
        Statement statment = conn.createStatement(); 
-       statment.execute("UPDATE mentor SET mentorname = '"+mentor.getMentorname()+"',mentorlastname ='"+mentor.getMentornickname()+"',mentornickname ='"+mentor.getMentornickname()+"',mentorposition ='"+mentor.getMentorposition()+"',metoremail ='"+mentor.getMetoremail()+"',mentorline ='"+mentor.getMentorline()+"',mentorfacebook ='"+mentor.getMentorfacebook()+"',phonenumber = '"+mentor.getPhonenumber()+"',mentorimg = '"+mentor.getMentorimg()+"' WHERE mentorid = '"+mentor.getMentorid()+"'"); 
+       statment.execute("UPDATE mentor SET mentorname = '"+mentor.getMentorname()+"',mentorlastname ='"+mentor.getMentorlastname()+"',mentornickname ='"+mentor.getMentornickname()+"',mentorposition ='"+mentor.getMentorposition()+"',metoremail ='"+mentor.getMetoremail()+"',mentorline ='"+mentor.getMentorline()+"',mentorfacebook ='"+mentor.getMentorfacebook()+"',phonenumber = '"+mentor.getPhonenumber()+"',mentorimg = '"+mentor.getMentorimg()+"' WHERE mentorid = '"+mentor.getMentorid()+"'"); 
+       conn.close();
+       return 1; 
+       }catch(Exception e){          
+    	   return -1; }   
+		
+		}   
+	public int UPDATEMentorED(Mentor mentor,Mentor mentorT)    {  
+		try{  
+			ConnectionDB dbcon = new ConnectionDB();
+       Connection conn = dbcon.getConnection();   
+       Statement statment = conn.createStatement(); 
+       statment.execute("UPDATE mentor SET mentorname = '"+mentor.getMentorname()+"',mentorlastname ='"+mentor.getMentorlastname()+"',mentornickname ='"+mentor.getMentornickname()+"',mentorposition ='"+mentor.getMentorposition()+"',metoremail ='"+mentor.getMetoremail()+"',mentorline ='"+mentor.getMentorline()+"',mentorfacebook ='"+mentor.getMentorfacebook()+"',phonenumber = '"+mentor.getPhonenumber()+"',mentorimg = '"+mentor.getMentorimg()+"' WHERE mentorid = '"+mentorT.getMentorid()+"'"); 
        conn.close();
        return 1; 
        }catch(Exception e){          

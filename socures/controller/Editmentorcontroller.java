@@ -98,12 +98,12 @@ public class Editmentorcontroller {
 		Student student = (Student)session.getAttribute("student");
 	
 		if(mentorimg != "") {
-		 mentor = new Mentor(mentoridint,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,testitem_ID+"_"+date1+"_Mentor.png",student.getIdstudent());
+		 mentor = new Mentor(mentoridint,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,testitem_ID+"_"+date1+"_Mentor.png");
 		 String path = request.getSession().getServletContext().getRealPath("/") + "//images//";
 		 data.get(0).write(new File(path +File.separator +testitem_ID+"_"+date1+"_Mentor.png"));	
 		 
 		}else {
-		 mentor = new Mentor(mentoridint,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,mentor.getMentorimg(),student.getIdstudent());
+		 mentor = new Mentor(mentoridint,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,metorfacebook,phonenumber,mentor.getMentorimg());
 		}
 		
 		EditmentorDB sm = new EditmentorDB();
@@ -118,12 +118,14 @@ public class Editmentorcontroller {
 			Student student = (Student)session.getAttribute("student");
 			ListmentorDB   HM = new ListmentorDB();
 			List<Mentor> st = HM.AllListmentor(student.getIdstudent());
+			request.setAttribute("error", error);
 			session.setAttribute("listmentors", st);
-			return "EditStudentProfile";
+			return "ListmentorPage";
 		}else {
 			Mentor mentor1 = md.SearchMentorid(mentoridint);
+			request.setAttribute("error", error);
 			session.setAttribute("Ementor", mentor1);
-			return "EditStudentProfile";
+			return "EditmentorPage";
 		}
 		
 	}

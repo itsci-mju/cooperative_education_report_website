@@ -4,7 +4,9 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 
 
+
 <%
+teacher T = (teacher)session.getAttribute("teacher");
 List<teacher> Teacher = null;
 try{
  Teacher = (List)session.getAttribute("teacherlist");
@@ -85,6 +87,20 @@ hr.style13 {
 </div>
 <%} %>
 
+<%if(error == 2){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> แก้ไขสถานะมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+
+<%if(error == 3){ %>
+<div class="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong> <i class="fa-sharp fa-solid fa-circle-check"></i> ลบมูลสำเร็จ : </strong> บันทึกข้อมูลเรียนร้อยแล้ว  
+</div>
+<%} %>
+
 	<div class="container" style="margin-top: 35px;">
 <br><br>
                 <div align = "right">
@@ -99,6 +115,7 @@ hr.style13 {
                             <th>เบอร์โทรศัพท์</th>
                             <th>อีเมล</th>
                             <th>แก้ไขสถานะ</th>   
+                            <th>เปลี่ยนตําแหน่งอาจารย์ประสานงาน</th>
                             <th>ลบข้อมูล</th>                         
                         </tr> 
                     </thead>   
@@ -116,7 +133,12 @@ hr.style13 {
                            <%}else{ %>
                           <th><a href="${pageContext.request.contextPath}/loadStatusTeacher?Teacherid=<%=t.getTeacherid()%>&getStatus=อยู่" ><button class="btn btn-danger" ><%=t.getStatus()%></button></a></th> 
                            <%} %>
-                         
+                           
+                           <%if(t.getStatus().equals("กำลังศึกษาต่อ")){ %>
+                           <th style="color:Tomato;"><i class="fa-sharp fa-solid fa-circle-exclamation"></i> ไม่สามารถมอบหมายตําแหน่งได้ </th>
+                          <%}else{ %>
+                           <th><a href="${pageContext.request.contextPath}/loadStatusTeacherposition?Teacherid=<%=t.getTeacherid()%>&Tid=<%=T.getTeacherid()%>" ><button class="btn btn-info" >มอบหมายตําแหน่ง </button></a></th> 
+                          <%} %>
                          <th><a href="${pageContext.request.contextPath}/loadDETeacher?Teacherid=<%=t.getTeacherid()%>" ><button class="btn btn-danger" >ลบข้อมูล </button></a></th> 
                         </tr>                    
                 <%} %>

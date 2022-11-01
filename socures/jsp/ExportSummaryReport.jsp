@@ -23,7 +23,16 @@ String getSemester = (String)session.getAttribute("getSemester");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <body>
-<%String Rid = ListStu.AllReportStuid(student.get(0).getIdstudent()); %>
+<%
+String Rid = null;
+for(int i = 0;i<student.size();i++){ 
+ Rid = ListStu.AllReportStuid(student.get(i).getIdstudent()); 
+if(Rid != null){
+	break;
+}
+} %>
+
+
 <%List<teacher> TC = ListStu.AllReportTname(Rid);%>
 <%response.setContentType("application/vnd.ms-excel"); %>
 <%response.setHeader("Content-Disposition", "inline; filename=employee.xls"); %>
@@ -32,6 +41,9 @@ String getSemester = (String)session.getAttribute("getSemester");
 	
 	<table class="table table-bordered" id="myTable" style="width:95%" >
 								<thead class="table-info" align = "center">
+								<tr>
+								 <th colspan="<%=TC.size()+TC.size()+6 %>"> <%=getSemester%> </th>
+								</tr>
 									<tr>
 										<th rowspan="2"> รหัสนักศึกษา </th>
 										<th rowspan="2"> ชื่อนักศึกษา </th>										
@@ -57,6 +69,7 @@ String getSemester = (String)session.getAttribute("getSemester");
 								<%for(Student stu : student){ %>
 								<%double scoreSUM = 0; %>
 								<%double scoreVDOSUM = 0; %>
+								<%int SUMTC = 0; %>
                                         <tr align = "center"> 
                                         <th><%=stu.getIdstudent() %></th>   
                                         <th><%=stu.getStudentname()%> <%=stu.getStudentlastname() %></th> 
@@ -81,22 +94,46 @@ String getSemester = (String)session.getAttribute("getSemester");
 								
 								<%for(teacher T : TC){ %>		
 								<%double score = ListStu.scoreSTU(RidSUM , T.getTeacherid()); %>
-								<%scoreSUM = scoreSUM+score; %>
-								  <th><%=score %></th>  
+								<%if(score < 0){ %>
+									 <th>-</th> 
+								<%}else{ %>
+								  <%scoreSUM = scoreSUM+score; %>
+									<%SUMTC ++; %>
+									 <th><%=score %></th>  
 								  <%} %>
+								    <%} %>
 								  
-								  <%Double AVG = scoreSUM/TC.size();%>
-								   <%Double avgscore = ( Math.floor(AVG * 100) / 100 );%>
-								   <th><%=avgscore %></th>   
+								  <%Double AVG = scoreSUM/SUMTC;%>
+								   <%Double avgscore = ( Math.floor(AVG * 100) / 100 );%> 
+	   
+								   <%if(Double.isNaN(avgscore)){ %>
+								        <th style = "background-color: #FF8F8F;">0</th> 
+								     <%}else{ %>  							      
+								        <th style = "background-color: #61DD99;"><%=avgscore%></th> 
+								     <%} %>        
 								   
-								  <%for(teacher T : TC){ %>		
+								   <%SUMTC = 0; %>  
+								<%for(teacher T : TC){ %>		
 								<%double scorevdo = ListStu.scoreSTUVDO(stu.getIdstudent() , T.getTeacherid()); %>
-								<%scoreVDOSUM = scoreVDOSUM+scorevdo; %>
-								  <th><%=scorevdo %></th>  
+								
+								<%if(scorevdo<0){ %>
+								 <th>-</th>
+								  <%}else{ %>
+								  <%scoreVDOSUM = scoreVDOSUM+scorevdo; %>
+								  <%SUMTC ++; %>
+								  <th><%=scorevdo %></th>
+								 
+								  <%} %>
 								  <%} %> 
-								      <%Double AVGvdo = scoreVDOSUM/TC.size();%>
+								  
+								       <%Double AVGvdo = scoreVDOSUM/SUMTC;%>
 								   <%Double avgscorevdo = ( Math.floor(AVGvdo * 100) / 100 );%>
-								     <th><%=avgscorevdo%></th>                           
+								   
+								   <%if(Double.isNaN(avgscorevdo)){ %>
+								        <th style = "background-color: #FF8F8F;">0</th> 
+								     <%}else{ %>  							      
+								        <th style = "background-color: #61DD99;"><%=avgscorevdo%></th> 
+								     <%} %>                       
                                         </tr>
                                  <%} %>
 								</tbody>

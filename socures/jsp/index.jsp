@@ -6,6 +6,7 @@
 <%ViewReportDB VR = new ViewReportDB(); %>
 <%ViewVDODB vdo = new ViewVDODB(); %>
 <%teacherManager TM = new teacherManager(); %>
+<%ListCompanyDB com = new ListCompanyDB(); %>
 
 <%
 String error = null; 
@@ -327,6 +328,7 @@ figure img{width:300px;}
 			<%
 			if( listCOM.size() > 0){
 				for (int i = 0; i < listCOM.size(); i++) {
+					
 					String img = RVC.getscorING(listCOM.get(i).getCompanyid());
 			        String[] arr = img.split(","); 
 			%>
@@ -667,14 +669,32 @@ figure img{width:300px;}
   <%List<VDO> Listvdo = vdo.AllListStuvdoDESC(); %>
   <%for(int i= 0; i<Listvdo.size() ; i++){ %>
     <li class="cards_item">
-      <div class="card">
+	  <% String[] arr = Listvdo.get(i).getFilename().split("https://youtu.be/"); %>
+	 <div class="card_image">  
+	  <div class="container position-relative">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <div class="media">
+        <div class="media-body">
+          <div class="row">
+            <div class="hover-name col-auto pr-0">
+              <div class="text-dark position-relative">
+              <%Company c = com.Searchcompanyid(Listvdo.get(i).getCompany_companyid()); %>
+                <h5>บริษัท <%=c.getCompanyname() %></h5>         
+              </div>
+            </div>
+            <div class="col-auto pr-0">        
+              <span class="text-muted"><i class="fa-sharp fa-solid fa-earth-americas"></i> <%=Listvdo.get(i).getSemester() %> </span>                      
+            </div>
+          </div>
+           <iframe width="350" height="300" src="https://www.youtube.com/embed/<%=arr[1]%>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          </div>
+          </div>
+          </div>
+         </div> 
+	  
       
-      <% String[] arr = Listvdo.get(i).getFilename().split("src="); %>
-	  <% String[] arr1 = arr[1].split("title="); %>
-        <div class="card_image">
-       <iframe width="350" height="300" src=<%=arr1[0]%> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-       
       </div>
     </li>
 <%}%>

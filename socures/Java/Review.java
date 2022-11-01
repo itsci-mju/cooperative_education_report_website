@@ -13,6 +13,7 @@ public class Review {
 	private String reviewdetails;
 	private String reviewdate;
 	private double reviewrating;
+	private String status;
 	private String Student_studentid;
 	
 	public Review() {
@@ -20,13 +21,14 @@ public class Review {
 	}
 
 	public Review(int reviewid, String reviewpicture, String reviewdetails, String reviewdate, double reviewrating,
-			String student_studentid) {
+			String status, String student_studentid) {
 		super();
 		this.reviewid = reviewid;
 		this.reviewpicture = reviewpicture;
 		this.reviewdetails = reviewdetails;
 		this.reviewdate = reviewdate;
 		this.reviewrating = reviewrating;
+		this.status = status;
 		Student_studentid = student_studentid;
 	}
 
@@ -48,6 +50,10 @@ public class Review {
 
 	public double getReviewrating() {
 		return reviewrating;
+	}
+
+	public String getStatus() {
+		return status;
 	}
 
 	public String getStudent_studentid() {
@@ -74,8 +80,14 @@ public class Review {
 		this.reviewrating = reviewrating;
 	}
 
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public void setStudent_studentid(String student_studentid) {
 		Student_studentid = student_studentid;
 	}
+	
+	
 
 }

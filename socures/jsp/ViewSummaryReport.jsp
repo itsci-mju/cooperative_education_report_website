@@ -69,7 +69,16 @@ hr.style13 {
 
 <br><br>
 
-<%String Rid = ListStu.AllReportStuid(student.get(0).getIdstudent()); %>
+
+<%
+String Rid = null;
+for(int i = 0;i<student.size();i++){ 
+ Rid = ListStu.AllReportStuid(student.get(i).getIdstudent()); 
+if(Rid != null){
+	break;
+}
+} %>
+
 <%List<teacher> TC = ListStu.AllReportTname(Rid);%>
 
 
@@ -90,7 +99,9 @@ hr.style13 {
 							<label class="col-sm-2 col-form-label text-right"> ภาคการศึกษา </label>
                            <% List<String> semester =  ListStu.AllListsemester(); %>
                                        <select name="searchDate" id="searchDate" >                                                                                    
-                                             <%for(int i = 0; i<semester.size(); i++){ %>   
+                                             <%for(int i = 0; i<semester.size(); i++){ %>  
+                                              
+                                                 
                                                  <%if(semester.get(i).equals(getSemester)){ %>
                                                  <option selected value="<%=semester.get(i)%>"><%=semester.get(i)%></option>         
                                                  <%}else{ %> 
@@ -113,22 +124,32 @@ hr.style13 {
      </tr>    
      </thead>
      <tbody>
-     <%for(teacher T : teacherList){ %>
+      <%if(TC.size() != 0 ){ %>
+     <%for(teacher TE : TC){ %>
      <tr>
-      <th> <%=T.getTeacherid() %> </th>
-      <th> <%=T.getTeachername()%> <%=T.getTeacherlastname() %></th>
+      <th> T<%=TE.getTeacherid() %> </th>
+      <th> <%=TE.getTeachername()%> <%=TE.getTeacherlastname() %></th>
      </tr>
 	 <%} %>
+	  <%}else{ %>
+	  <tr>
+        <td colspan = "6" align="center"><h5 style="color:#850000"> <i class="fa fa-ban"></i> ไม่มีข้อมูลอาจารย์ </h5></td>
+      </tr>
+	  <%} %>
      </tbody>
      </table>                   
       <br><br>            
                <div align = "right" style = "margin-right:45px">
-				<a href = "${pageContext.request.contextPath}/ViewExportSummaryReport?getSemester=<%=getSemester%>" class="btn btn-success" ><i class="fa-solid fa-file-export"></i> เอ็นพอยท์ผลการประเมิน  </a>
+               <%System.out.println(getSemester); %>
+				<a href = "${pageContext.request.contextPath}/ViewExportSummaryReport?getsemester=<%=getSemester%>" class="btn btn-success" ><i class="fa-solid fa-file-export"></i> เอ็นพอยท์ผลการประเมิน  </a>
 				
 				</div>                        					
 	<table class="table table-bordered" id="myTable" style="width:95%" >
 								<thead class="table-info" align = "center">
-									<tr>
+								<tr>
+								 <th colspan="<%=TC.size()+TC.size()+6 %>"> <%=getSemester%> </th>
+								</tr>
+									<tr>									
 										<th rowspan="2"> รหัสนักศึกษา </th>
 										<th rowspan="2"> ชื่อนักศึกษา </th>										
 										<th rowspan="2" > ระยะเวลาการฝึก </th>		
@@ -139,11 +160,11 @@ hr.style13 {
 									</tr>
 									<tr>
 									<%for(teacher T : TC){ %>
-										<th> <%=T.getTeacherid() %> </th>
+										<th> T<%=T.getTeacherid() %> </th>
 										<%} %>
 									<th> คะแนนรายงานเฉลี่ย </th>
 									<%for(teacher T : TC){ %>
-										<th> <%=T.getTeacherid() %> </th>
+										<th> T<%=T.getTeacherid() %> </th>
 										<%} %>
 									<th> คะแนนนำเสนอเฉลี่ย </th>
 									</tr>
@@ -153,6 +174,7 @@ hr.style13 {
 								<%for(Student stu : student){ %>
 								<%double scoreSUM = 0; %>
 								<%double scoreVDOSUM = 0; %>
+								<%int SUMTC = 0; %>
                                         <tr align = "center"> 
                                         <th><%=stu.getIdstudent() %></th>   
                                         <th><%=stu.getStudentname()%> <%=stu.getStudentlastname() %></th> 
@@ -177,22 +199,45 @@ hr.style13 {
 								
 								<%for(teacher T : TC){ %>		
 								<%double score = ListStu.scoreSTU(RidSUM , T.getTeacherid()); %>
-								<%scoreSUM = scoreSUM+score; %>
-								  <th><%=score %></th>  
+								<%if(score<0){ %>
+									 <th>-</th>  
+								<%}else{ %>					
+								  <%scoreSUM = scoreSUM+score; %>
+									<%SUMTC ++; %>
+									 <th><%=score %></th>  
 								  <%} %>
+								    <%} %>
 								  
-								  <%Double AVG = scoreSUM/TC.size();%>
-								   <%Double avgscore = ( Math.floor(AVG * 100) / 100 );%>
-								   <th><%=avgscore %></th>   
+								    <%Double AVG = scoreSUM/SUMTC;%>
+								   <%Double avgscore = ( Math.floor(AVG * 100) / 100 );%> 
+	   
+								   <%if(Double.isNaN(avgscore)){ %>
+								        <th style = "background-color: #FF8F8F;">0</th> 
+								     <%}else{ %>  							      
+								        <th style = "background-color: #61DD99;"><%=avgscore%></th> 
+								     <%} %>   
 								   
-								  <%for(teacher T : TC){ %>		
+								 <%SUMTC = 0; %>  
+								<%for(teacher T : TC){ %>		
 								<%double scorevdo = ListStu.scoreSTUVDO(stu.getIdstudent() , T.getTeacherid()); %>
-								<%scoreVDOSUM = scoreVDOSUM+scorevdo; %>
-								  <th><%=scorevdo %></th>  
+								
+								<%if(scorevdo<0){ %>
+								  <th>-</th>
+								  <%}else{ %>
+								  <%scoreVDOSUM = scoreVDOSUM+scorevdo; %>
+								<%SUMTC ++; %>
+								  <th><%=scorevdo %></th>
+								  <%} %>
 								  <%} %> 
-								    <%Double AVGvdo = scoreVDOSUM/TC.size();%>
+								  
+								    <%Double AVGvdo = scoreVDOSUM/SUMTC;%>
 								   <%Double avgscorevdo = ( Math.floor(AVGvdo * 100) / 100 );%>
-								     <th><%=avgscorevdo%></th>                           
+								   
+								   <%if(Double.isNaN(avgscorevdo)){ %>
+								        <th style = "background-color: #FF8F8F;">0</th> 
+								     <%}else{ %>  							      
+								        <th style = "background-color: #61DD99;"><%=avgscorevdo%></th> 
+								     <%} %>                        
                                         </tr>
                                  <%} %>
 								</tbody>
@@ -202,6 +247,7 @@ hr.style13 {
 							</form>
 </div>
 	
+
   <jsp:include page="com/footer.jsp"></jsp:include>
 </body>
 </html>

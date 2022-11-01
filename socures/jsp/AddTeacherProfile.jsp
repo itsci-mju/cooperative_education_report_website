@@ -127,6 +127,7 @@ function validateForm(frm){
 	var regexpPW =/^[A-Za-z|0-9]{10,}$/;
 
 	
+	
 	if(frm.teachername.value == ""){
 		alert("กรุณากรอกชื่อ");
 		return false;
@@ -293,7 +294,7 @@ for (i = 0; i < close.length; i++) {
 									<div class="col-sm-12 text-center">
 										<a href="#"><button type="submit" OnClick ="return validateForm(frm)" class="btn btn-success" >
 												เพิ่มข้อมูลอาจารย์ </button></a>
-										<button type="reset" class="btn btn-warning">ยกเลิก</button>
+										<a href = "${pageContext.request.contextPath}/loadListTeacherPage" class="btn btn-warning" >ยกเลิก </a>
 									</div>
 								</div>
 								</form>	 

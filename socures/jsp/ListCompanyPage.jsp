@@ -14,6 +14,15 @@
     ListCompanyDB Listcompany = new ListCompanyDB();
 %>
 
+<%int error = 0; %>
+<%
+try{
+	error = (int)request.getAttribute("error");
+}catch(Exception e) {
+	error = 0;
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +44,7 @@
 <link href='https://fonts.googleapis.com/css?family=Kanit'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="./css/web_css.css">
-	
+<script src="https://kit.fontawesome.com/e18a64822c.js"></script>	
 	
 <style type="text/css">
 
@@ -210,9 +219,9 @@ hr.style13 {
                            <div class="main-form-container">                        
                            
                            <input type="text" class="main-input main-name" name="NAME" id="NAME" placeholder ="กรุณากรอกข้อมูล" onfocus="clearText(this)" onblur="replaceText(this)" />                                  
-                            <select name="search" id="search" class="main-btn">                                                                                                                        
-                                            <option value="Company">ชื่อบริษัท</option>                                                                           
-                                         </select>
+                            <input  name="search" id="search" value=" ชื่อบริษัท" class="main-btn" disabled/>                                                                                                                        
+                                                                                                                    
+                                         
                          
                            <input id="main-submit" class="" type="submit" value="ค้นหา" />
                          
@@ -225,12 +234,13 @@ hr.style13 {
 							<label class="col-sm-2 col-form-label text-right"> ภาคการศึกษา </label>
                            <% List<String> semester =  ListStu.AllListsemester(); %>
                                         <select name="searchDate" id="searchDate" >                                                                                    
-                                             <%for(int i = 0; i<semester.size(); i++){ %>   
-                                                 <%if(semester.get(i).equals(Semester)){ %>
+                                             <%for(int i = 0; i<semester.size(); i++){ %>
+                                             
+                                               <%if(semester.get(i).equals(Semester)){ %>
                                                  <option selected value="<%=semester.get(i)%>"><%=semester.get(i)%></option>         
                                                  <%}else{ %> 
                                                  <option value="<%=semester.get(i)%>"><%=semester.get(i)%></option>  
-                                                 <%} %>  
+                                                 <%} %>   
                                              <%} %>
                                          <option value="">แสดงทั้งหมด</option> 
                                         </select>
@@ -244,7 +254,7 @@ hr.style13 {
 										<th> รหัสบริษัท </th>
 										<th> ชื่อบริษัท</th>
 										<th> จำนวนนักศึกษา </th>
-										<th> รายชื่อนักศึกษา </th>
+										<th> ให้คะแนนนักศึกษา </th>
 										<th> ข้อมูลบริษัท </th>
 									
 										
@@ -280,9 +290,41 @@ hr.style13 {
 	</div>
 
 
-<script>
+<script type="text/javascript">
+$(document).ready(
+        function() {
+            $('#myTable').after(
+                    '<div id="nav" class="pagination" ></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#myTable tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav')
+                        .append(
+                                '<a href="#" rel="'+i+'" >' + pageNum
+                                        + '</a> ');
+            }
+            $('#myTable tbody tr').hide();
+            $('#myTable tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind(
+                    'click',
+                    function() {
 
-
+                        $('#nav a').removeClass('active');
+                        $(this).addClass('active');
+                        var currPage = $(this).attr('rel');
+                        var startItem = currPage * rowsShown;
+                        var endItem = startItem + rowsShown;
+                        $('#myTable tbody tr').css('opacity', '0.0')
+                                .hide().slice(startItem, endItem).css(
+                                        'display', 'table-row')
+                                .animate({
+                                    opacity : 1
+                                }, 300);
+                    });
+        });
 </script>
   <jsp:include page="com/footer.jsp"></jsp:include>
 </body>

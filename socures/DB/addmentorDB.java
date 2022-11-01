@@ -52,7 +52,23 @@ public class addmentorDB {
 		Connection con = condb.getConnection();
 		try {
 		Statement statment = con.createStatement();
-		statment.execute("insert into mentor values('"+mentor.getMentorid()+"','"+mentor.getMentorname()+"','"+mentor.getMentorlastname()+"','"+mentor.getMentornickname()+"','"+mentor.getMentorposition()+"','"+mentor.getMetoremail()+"','"+mentor.getMentorline()+"','"+mentor.getMentorfacebook()+"','"+mentor.getPhonenumber()+" ','"+mentor.getMentorimg()+"','"+mentor.getStudent_studentid()+"')");
+		statment.execute("insert into mentor values('"+mentor.getMentorid()+"','"+mentor.getMentorname()+"','"+mentor.getMentorlastname()+"','"+mentor.getMentornickname()+"','"+mentor.getMentorposition()+"','"+mentor.getMetoremail()+"','"+mentor.getMentorline()+"','"+mentor.getMentorfacebook()+"','"+mentor.getPhonenumber()+" ','"+mentor.getMentorimg()+"')");
+		con.close();
+		return 1;
+		
+		}catch(Exception e){
+		System.out.println(e);
+		
+		return -1;
+		}
+		}
+	
+	public int addmentor_student(String sid , int mid){
+		ConnectionDB condb = new ConnectionDB();
+		Connection con = condb.getConnection();
+		try {
+		Statement statment = con.createStatement();
+		statment.execute("insert into mentor_student values('"+mid+"','"+sid+"')");
 		con.close();
 		return 1;
 		
@@ -71,7 +87,7 @@ public Mentor SearchMentorname (String name ,String lastname1){
 		Mentor mentor = null;
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "select * from mentor where mentorname = "+name+" and mentorlastname = "+lastname1+" ";
+			String sql = "select * from mentor where mentorname like '"+name+"' and mentorlastname like '"+lastname1+"' ";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				
@@ -85,15 +101,15 @@ public Mentor SearchMentorname (String name ,String lastname1){
 				String mentorfacebook = rs.getString(8);
 				String phonenumber = rs.getString(9);
 				String mentorimg = rs.getString(10);	
-				String Student_studentid = rs.getString(11);
 				
 				
-				mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg,Student_studentid);
+				mentor = new Mentor(mentorid,mentorname,lastname,mentornickname,mentorposition,metoremail,mentorline,mentorfacebook,phonenumber,mentorimg);
 		
 			}
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			mentor = null;
 		}
 		return mentor;
 		
